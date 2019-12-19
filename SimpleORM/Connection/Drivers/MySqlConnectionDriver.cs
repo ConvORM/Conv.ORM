@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using SimpleORM.Connection.Drivers.Interfaces;
+using SimpleORM.Connection.Helpers;
 using SimpleORM.Connection.Parameters;
 using SimpleORM.Exceptions;
 using System;
@@ -20,7 +21,7 @@ namespace SimpleORM.Connection.Drivers
             }
             catch (MySqlException ex)
             {
-                throw new ConnectionException(Convert.ToString(ex.ErrorCode), ex.Message);
+                throw ConnectionHelper.HandlerMySQLException(ex);
             }
         }
 
