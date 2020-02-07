@@ -1,4 +1,4 @@
-﻿namespace SimpleORM.Connection.Drivers
+﻿namespace ConvORM.Connection.Drivers
 {
     class FirebirdConnectionDriver
     {

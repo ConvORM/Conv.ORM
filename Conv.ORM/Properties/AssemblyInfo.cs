@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SimpleORM")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Conv.ORM")]
+[assembly: AssemblyDescription("Simple ORM")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SimpleORM")]
+[assembly: AssemblyCompany("Maruccio")]
+[assembly: AssemblyProduct("Conv.ORM")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

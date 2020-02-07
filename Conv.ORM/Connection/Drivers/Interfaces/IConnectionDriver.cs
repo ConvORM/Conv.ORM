@@ -1,6 +1,6 @@
-﻿using SimpleORM.Connection.Parameters;
+﻿using ConvORM.Connection.Parameters;
 
-namespace SimpleORM.Connection.Drivers.Interfaces
+namespace ConvORM.Connection.Drivers.Interfaces
 {
     interface IConnectionDriver
     {

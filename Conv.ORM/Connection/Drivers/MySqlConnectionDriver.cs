@@ -1,11 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
-using SimpleORM.Connection.Drivers.Interfaces;
-using SimpleORM.Connection.Helpers;
-using SimpleORM.Connection.Parameters;
-using SimpleORM.Exceptions;
+using ConvORM.Connection.Drivers.Interfaces;
+using ConvORM.Connection.Helpers;
+using ConvORM.Connection.Parameters;
+using ConvORM.Exceptions;
 using System;
 
-namespace SimpleORM.Connection.Drivers
+namespace ConvORM.Connection.Drivers
 {
     class MySqlConnectionDriver : IConnectionDriver
     {

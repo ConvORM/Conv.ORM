@@ -1,8 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
-using SimpleORM.Exceptions;
+using ConvORM.Exceptions;
 using System;
 
-namespace SimpleORM.Connection.Helpers
+namespace ConvORM.Connection.Helpers
 {
     static class ConnectionHelper
     {

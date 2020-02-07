@@ -1,8 +1,7 @@
-﻿namespace SimpleORM.Connection.Parameters
+﻿namespace ConvORM.Connection.Parameters
 {
     public class ConnectionParameters
     {
-
         public string Host { get; set; }
         public string Port { get; set; }
         public string User { get; set; }

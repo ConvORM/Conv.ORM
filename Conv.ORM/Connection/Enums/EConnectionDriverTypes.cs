@@ -1,4 +1,4 @@
-﻿namespace SimpleORM.Connection.Enums
+﻿namespace ConvORM.Connection.Enums
 {
     public enum EConnectionDriverTypes
     {

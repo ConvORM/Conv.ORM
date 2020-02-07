@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleORM.Exceptions
+namespace ConvORM.Exceptions
 {
     [Serializable]
     public class ConnectionException : Exception

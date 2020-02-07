@@ -1,9 +1,9 @@
-﻿using SimpleORM.Connection.Drivers;
-using SimpleORM.Connection.Drivers.Interfaces;
-using SimpleORM.Connection.Enums;
-using SimpleORM.Connection.Parameters;
+﻿using ConvORM.Connection.Drivers;
+using ConvORM.Connection.Drivers.Interfaces;
+using ConvORM.Connection.Enums;
+using ConvORM.Connection.Parameters;
 
-namespace SimpleORM.Connection
+namespace ConvORM.Connection
 {
     public class Connection
     {
