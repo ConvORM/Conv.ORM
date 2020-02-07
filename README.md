@@ -1,4 +1,4 @@
-# ConvORM
+# Conv.ORM
 Simple ORM for C# possibiliting connect to MySql, Sql Server, MariaDB, Firebird, Postgree databases.
 
 **Still in Development**
