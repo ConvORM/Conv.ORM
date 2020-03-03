@@ -1,9 +1,7 @@
-﻿using MySql.Data.MySqlClient;
-using ConvORM.Connection.Drivers.Interfaces;
+﻿using ConvORM.Connection.Drivers.Interfaces;
 using ConvORM.Connection.Helpers;
 using ConvORM.Connection.Parameters;
-using ConvORM.Exceptions;
-using System;
+using MySql.Data.MySqlClient;
 
 namespace ConvORM.Connection.Drivers
 {
@@ -29,5 +27,7 @@ namespace ConvORM.Connection.Drivers
         {
             return "Server=" + parameters.Host + ";Port=" + parameters.Port + ";Database=" + parameters.Database + ";Uid=" + parameters.User + ";Pwd = " + parameters.Password + ";";
         }
+
+
     }
 }

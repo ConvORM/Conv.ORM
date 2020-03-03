@@ -6,6 +6,5 @@ namespace ConvORM.Connection.Drivers.Interfaces
     {
         bool Connect(ConnectionParameters parameters);
         
-
     }
 }

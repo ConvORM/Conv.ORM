@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ConvORM.DataSet.Entities
+namespace ConvORM.Repository.Entities
 {
-    public class EntitiesAttributes: Attribute
+    public class EntitiesColumnAttributes: Attribute
     {
         public string DataType;
         public string Name;
