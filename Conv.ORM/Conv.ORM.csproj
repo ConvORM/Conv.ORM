@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConvORM</RootNamespace>
-    <AssemblyName>ConvORM</AssemblyName>
+    <AssemblyName>Conv.ORM</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -35,14 +35,14 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=7.1.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
-      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.7.1.1\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=7.5.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.7.5.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.11.2.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.11.2\lib\net45\Google.Protobuf.dll</HintPath>
+    <Reference Include="Google.Protobuf, Version=3.11.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.11.4\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=8.0.18.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.8.0.18\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=8.0.19.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.19\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
@@ -76,25 +76,41 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.19\lib\net452\Ubiety.Dns.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection\Classes\ColumnModelEntity.cs" />
+    <Compile Include="Connection\Classes\Converter.cs" />
+    <Compile Include="Connection\Classes\ModelEntity.cs" />
+    <Compile Include="Connection\Classes\RelationColumnModelEntity.cs" />
+    <Compile Include="Connection\Classes\CommandBuilder.cs" />
     <Compile Include="Connection\Connection.cs" />
+    <Compile Include="Connection\ConnectionFactory.cs" />
+    <Compile Include="Connection\ConnectionsParametersFile.cs" />
+    <Compile Include="Connection\DataSets\DataSet.cs" />
     <Compile Include="Connection\Drivers\FirebirdConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\Interfaces\IConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\PostgreeSQLConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\MySqlConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\SQLServerConnectionDriver.cs" />
     <Compile Include="Connection\Enums\EConnectionDriverTypes.cs" />
+    <Compile Include="Connection\Enums\EDataType.cs" />
     <Compile Include="Connection\Helpers\ConnectionHelper.cs" />
+    <Compile Include="Connection\Helpers\ConverterModelEntityHelper.cs" />
     <Compile Include="Connection\Parameters\ConnectionParameters.cs" />
-    <Compile Include="Repository\Entities\EntitiesAtributes.cs" />
+    <Compile Include="Repository\Entities\EntitiesAttributes.cs" />
     <Compile Include="Repository\Entities\EntitiesColumnAttributes.cs" />
     <Compile Include="Exceptions\ConnectionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Entities\EntitiesColumnRelationAttributes.cs" />
     <Compile Include="Repository\Entity.cs" />
     <Compile Include="Repository\Repository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="connection.xml" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

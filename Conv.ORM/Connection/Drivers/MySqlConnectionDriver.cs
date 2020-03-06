@@ -1,7 +1,12 @@
-﻿using ConvORM.Connection.Drivers.Interfaces;
+﻿using ConvORM.Connection.Classes;
+using ConvORM.Connection.Drivers.Interfaces;
 using ConvORM.Connection.Helpers;
 using ConvORM.Connection.Parameters;
+using ConvORM.Repository;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace ConvORM.Connection.Drivers
 {
@@ -23,11 +28,56 @@ namespace ConvORM.Connection.Drivers
             }
         }
 
+        public int ExecuteCommand(string sql)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int ExecuteCommand(string sql, Dictionary<string, object> parameters)
+        {
+            MySqlCommand command = new MySqlCommand
+            {
+                CommandText = sql
+            };
+
+            #if DEBUG
+                Console.WriteLine("Query: " + sql);
+            #endif
+
+            MySqlCommand lastId;
+            MySqlDataReader lid = null;
+            lastId = new MySqlCommand();
+            lastId.Connection = Connection;
+            lastId.CommandText = ("SELECT LAST_INSERT_ID()");
+
+            foreach (string key in parameters.Keys)
+            {
+                command.Parameters.AddWithValue(key, parameters[key]);
+            }
+
+            command.Connection = Connection;
+
+            try
+            {
+                Connection.Open();
+                command.ExecuteNonQuery();
+                lid = lastId.ExecuteReader(CommandBehavior.CloseConnection);
+                Connection.Close();
+
+                return lid.GetInt32(0);
+            }
+        }
+
+        public Entity Insert(Entity entity)
+        {
+            ModelEntity modelEntity = Converter.EntityToModelEntity(entity);
+            throw new System.NotImplementedException();
+        }
+
         private string GenerateConnectionString(ConnectionParameters parameters)
         {
             return "Server=" + parameters.Host + ";Port=" + parameters.Port + ";Database=" + parameters.Database + ";Uid=" + parameters.User + ";Pwd = " + parameters.Password + ";";
         }
-
 
     }
 }

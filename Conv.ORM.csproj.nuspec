@@ -2,20 +2,20 @@
 <package >
   <metadata>
     <id>Conv.ORM</id>
-    <version>1.0.4-beta</version>
+    <version>1.0.6-beta</version>
     <authors>luism</authors>
     <owners>luism</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <description>Package description</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <description>ORM for C#</description>
+    <releaseNotes>Develop Updates.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>ORM C#</tags>
 	<dependencies>
         <dependency  id="BouncyCastle" version="1.8.5"/>
-		<dependency  id="FirebirdSql.Data.FirebirdClient" version="7.1.1"/>
-		<dependency  id="Google.Protobuf" version="3.11.2"/>
-		<dependency  id="MySql.Data" version="8.0.18" />
+		<dependency  id="FirebirdSql.Data.FirebirdClient" version="7.5.0"/>
+		<dependency  id="Google.Protobuf" version="3.11.4"/>
+		<dependency  id="MySql.Data" version="8.0.19" />
 		<dependency  id="SSH.NET" version="2016.1.0" />
 		<dependency  id="System.Buffers" version="4.5.0" />
 		<dependency  id="System.Memory" version="4.5.3" />

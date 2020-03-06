@@ -5,6 +5,7 @@
         ecdtFirebird,
         ecdtMySql,
         ecdtPostgreeSQL,
-        ecdtSQLServer
+        ecdtSQLServer,
+        ecdtNone
     }
 }

@@ -7,42 +7,56 @@ namespace ConvORM.Connection
 {
     public class Connection
     {
-        //Fields
-
         //Propertys
-        public EConnectionDriverTypes ConnectionDriverType { get; set; }
-        public ConnectionParameters Parameters { get; set; }
+        public ConnectionParameters Parameters { get; private set; }
+        public bool Connected { get; private set; }
 
-        private IConnectionDriver ConnectionDriver;
+        private IConnectionDriver _ConnectionDriver;
 
-        public bool Connect()
+        public Connection(ConnectionParameters parameters)
         {
-            if (ConnectionDriver == null)
+            Parameters = parameters;
+        }
+
+        internal IConnectionDriver ConnectionDriver()
+        {
+            return _ConnectionDriver;
+        }
+
+        public Connection GetConnection()
+        {
+            if (_ConnectionDriver == null)
             {
                 LoadConnectionDriver();
             }
+               
+            Connected = _ConnectionDriver.Connect(Parameters);
 
-            return ConnectionDriver.Connect(Parameters);
+            if (Connected)
+                ConnectionFactory.AddConnection(this, "");
+
+            return this;
+
         }
 
         private void LoadConnectionDriver()
         {
-            switch (ConnectionDriverType)
+            switch (Parameters.ConnectionDriverType)
             {
                 case EConnectionDriverTypes.ecdtFirebird:
-                    ConnectionDriver = (IConnectionDriver) new FirebirdConnectionDriver();
+                    _ConnectionDriver = (IConnectionDriver) new FirebirdConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtMySql:
-                    ConnectionDriver = (IConnectionDriver) new MySqlConnectionDriver();
+                    _ConnectionDriver = new MySqlConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtPostgreeSQL:
-                    ConnectionDriver = (IConnectionDriver) new PostgreeSQLConnectionDriver();
+                    _ConnectionDriver = (IConnectionDriver) new PostgreeSQLConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtSQLServer:
-                    ConnectionDriver = (IConnectionDriver) new SQLServerConnectionDriver();
+                    _ConnectionDriver = (IConnectionDriver) new SQLServerConnectionDriver();
                     break;
                 default:
-                    ConnectionDriver = null;
+                    _ConnectionDriver = null;
                     break;
             }
         }
