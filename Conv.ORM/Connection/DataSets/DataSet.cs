@@ -79,7 +79,8 @@ namespace ConvORM.Connection.DataSets
         private Entity ExecuteInsert(Entity entity)
         {
             CommandBuilder commandBuilder = new CommandBuilder(modelEntity);
-            commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues);
+            int lastInsertedId = _connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues), parametersValues);
+
 
         }
     }

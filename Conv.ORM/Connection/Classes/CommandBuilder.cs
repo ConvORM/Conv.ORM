@@ -1,5 +1,4 @@
-﻿using ConvORM.Connection.Classes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace ConvORM.Connection.Classes

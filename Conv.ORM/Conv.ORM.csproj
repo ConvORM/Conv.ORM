@@ -84,6 +84,8 @@
     <Compile Include="Connection\Classes\ColumnModelEntity.cs" />
     <Compile Include="Connection\Classes\Converter.cs" />
     <Compile Include="Connection\Classes\ModelEntity.cs" />
+    <Compile Include="Connection\Classes\QueryBuilder.cs" />
+    <Compile Include="Connection\Classes\QueryOptions.cs" />
     <Compile Include="Connection\Classes\RelationColumnModelEntity.cs" />
     <Compile Include="Connection\Classes\CommandBuilder.cs" />
     <Compile Include="Connection\Connection.cs" />

@@ -66,6 +66,13 @@ namespace ConvORM.Connection.Drivers
 
                 return lid.GetInt32(0);
             }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    Console.WriteLine("Erro: " + e.Message);
+                #endif
+                return 0;
+            }
         }
 
         public Entity Insert(Entity entity)
