@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ConvORM.Connection
 {
-    static class ConnectionFactory
+    public static class ConnectionFactory
     {
         static private Dictionary<string, Connection> Connections;
         static private ConnectionsParametersFile connectionsParametersFile;
@@ -76,7 +76,7 @@ namespace ConvORM.Connection
 
         static private Connection LocateConnection()
         {
-            if (Connections == null)
+            if (Connections.Count == 0)
                 return null;
             else
             {

@@ -9,7 +9,7 @@ namespace ConvORM.Connection
 {
     internal class ConnectionsParametersFile
     {
-        private List<ConnectionParameters> ConnectionParametersList;
+        private ConnectionsParameters Connections;
         internal ConnectionsParametersFile()
         {
             string path = Directory.GetParent(Directory.GetParent(Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory)).FullName).FullName;
@@ -20,53 +20,55 @@ namespace ConvORM.Connection
                 Console.WriteLine("File path: " + path);
             #endif
 
-            FileStream fs;
+            StreamReader xmlFile;
 
             try
             {
-                fs  = new FileStream(path, FileMode.Open);
-                LoadConnectionParametersFromFile(fs);
+                xmlFile = new StreamReader(path);
+                LoadConnectionParametersFromFile(xmlFile);
 
             }
             catch (Exception e)
             {
                 #if DEBUG
                     Console.WriteLine("Erro in open the connection file: " + e.Message);
-                #endif
+#endif
 
-                fs = null;
+                xmlFile = null;
             }
         }
 
-        private void LoadConnectionParametersFromFile(FileStream fs)
+        private void LoadConnectionParametersFromFile(StreamReader xmlFile)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<ConnectionParameters>));
+            XmlSerializer serializer = new XmlSerializer(typeof(ConnectionsParameters));
 
             try
             {
-                ConnectionParametersList = serializer.Deserialize(fs) as List<ConnectionParameters>;
+                Connections = serializer.Deserialize(xmlFile) as ConnectionsParameters;
             }
             catch (InvalidOperationException ex)
             {
-                serializer.Serialize(fs, this.ConnectionParametersList);
+                #if DEBUG
+                    Console.WriteLine("Erro in open the connection file: " + ex.Message);
+                #endif
             }
             finally
             {
-                fs.Close();
+                xmlFile.Close();
             }
         }
 
         internal ConnectionParameters GetFirstConnectionParameter()
         {
-            if (ConnectionParametersList.Count == 0)
+            if (Connections.Connections.Count == 0)
                 return null;
             else
-                return ConnectionParametersList[0];
+                return Connections.Connections[0];
         }
 
         internal ConnectionParameters GetConnectionParameters(string name)
         {
-            if (ConnectionParametersList.Count == 0)
+            if (Connections.Connections.Count == 0)
                 return null;
             else
                 return LocateConnectionParameters(name);
@@ -74,7 +76,7 @@ namespace ConvORM.Connection
 
         internal ConnectionParameters GetConnectionParameters(EConnectionDriverTypes type)
         {
-            if (ConnectionParametersList.Count == 0)
+            if (Connections.Connections.Count == 0)
                 return null;
             else
                 return LocateConnectionParameters(type);
@@ -82,7 +84,7 @@ namespace ConvORM.Connection
 
         private ConnectionParameters LocateConnectionParameters(string name)
         {
-            foreach (ConnectionParameters parameters in ConnectionParametersList)
+            foreach (ConnectionParameters parameters in Connections.Connections)
             {
                 if (parameters.Name == name)
                 return parameters;                
@@ -93,7 +95,7 @@ namespace ConvORM.Connection
 
         private ConnectionParameters LocateConnectionParameters(EConnectionDriverTypes type)
         {
-            foreach (ConnectionParameters parameters in ConnectionParametersList)
+            foreach (ConnectionParameters parameters in Connections.Connections)
             {
                 if (parameters.ConnectionDriverType == type)
                     return parameters;                

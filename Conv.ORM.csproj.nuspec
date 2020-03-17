@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Conv.ORM</id>
-    <version>1.0.6-beta</version>
+    <version>1.0.14-beta</version>
     <authors>luism</authors>
     <owners>luism</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,6 +11,7 @@
     <releaseNotes>Develop Updates.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>ORM C#</tags>
+	<icon>images\icon.png</icon>
 	<dependencies>
         <dependency  id="BouncyCastle" version="1.8.5"/>
 		<dependency  id="FirebirdSql.Data.FirebirdClient" version="7.5.0"/>
@@ -25,5 +26,6 @@
   </metadata>
   <files>
     <file src="Conv.ORM\bin\Debug\Conv.ORM.dll" target="lib/net472/" />
+	<file src="icon.png" target="images\" />
 </files>
 </package>

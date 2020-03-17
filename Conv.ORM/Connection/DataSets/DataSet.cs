@@ -80,7 +80,13 @@ namespace ConvORM.Connection.DataSets
         {
             CommandBuilder commandBuilder = new CommandBuilder(modelEntity);
             int lastInsertedId = _connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues), parametersValues);
-
+            QueryConditionsBuilder conditionsBuilder = new QueryConditionsBuilder();
+            foreach (var column in modelEntity.GetPrimaryFields())
+            {
+                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
+            }
+            return _connection.ConnectionDriver().ExecuteQuery(commandBuilder.GetSqlSelect(conditionsBuilder), entity.GetType());
+            
 
         }
     }

@@ -13,6 +13,14 @@ namespace ConvORM.Connection.Drivers
     class MySqlConnectionDriver : IConnectionDriver
     {
         private MySqlConnection Connection;
+        private MySqlConnectionDriverHelper helper;
+
+        public MySqlConnectionDriver()
+        {
+            helper = new MySqlConnectionDriverHelper();
+        }
+
+
         public bool Connect(ConnectionParameters parameters)
         {
             Connection = new MySqlConnection(GenerateConnectionString(parameters));
@@ -72,6 +80,38 @@ namespace ConvORM.Connection.Drivers
                     Console.WriteLine("Erro: " + e.Message);
                 #endif
                 return 0;
+            }
+        }
+
+        public Entity ExecuteQuery(string sql, Type entityType)
+        {
+            MySqlCommand command = new MySqlCommand
+            {
+                CommandText = sql
+            };
+
+            #if DEBUG
+            Console.WriteLine("Query: " + sql);
+            #endif
+
+            command.Connection = Connection;
+
+            try
+            {
+                Connection.Open();
+                MySqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return helper.ConvertReaderToEntity(reader, entityType);
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                Console.WriteLine("Erro: " + e.Message);
+                #endif
+                return null;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
 

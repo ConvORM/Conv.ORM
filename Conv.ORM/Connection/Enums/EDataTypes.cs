@@ -1,6 +1,6 @@
 ﻿namespace ConvORM.Connection.Enums
 {
-    public enum EDataType
+    public enum EDataTypes
     {
         None, //Default
         Int, //MySQL, MariaDB, SqlServer

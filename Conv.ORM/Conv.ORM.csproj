@@ -82,14 +82,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\Classes\ColumnModelEntity.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\CommandSelectBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\CommandInsertBuilder.cs" />
     <Compile Include="Connection\Classes\Converter.cs" />
     <Compile Include="Connection\Classes\ModelEntity.cs" />
     <Compile Include="Connection\Classes\QueryBuilder.cs" />
-    <Compile Include="Connection\Classes\QueryOptions.cs" />
+    <Compile Include="Connection\Classes\QueryCondition.cs" />
+    <Compile Include="Connection\Classes\QueryConditionsBuilder.cs" />
     <Compile Include="Connection\Classes\RelationColumnModelEntity.cs" />
     <Compile Include="Connection\Classes\CommandBuilder.cs" />
     <Compile Include="Connection\Connection.cs" />
     <Compile Include="Connection\ConnectionFactory.cs" />
+    <Compile Include="Connection\ConnectionsParameters.cs" />
     <Compile Include="Connection\ConnectionsParametersFile.cs" />
     <Compile Include="Connection\DataSets\DataSet.cs" />
     <Compile Include="Connection\Drivers\FirebirdConnectionDriver.cs" />
@@ -97,10 +101,13 @@
     <Compile Include="Connection\Drivers\PostgreeSQLConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\MySqlConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\SQLServerConnectionDriver.cs" />
+    <Compile Include="Connection\Enums\EConditionTypes.cs" />
     <Compile Include="Connection\Enums\EConnectionDriverTypes.cs" />
-    <Compile Include="Connection\Enums\EDataType.cs" />
+    <Compile Include="Connection\Enums\EDataTypes.cs" />
+    <Compile Include="Connection\Enums\ELogicalConditionTypes.cs" />
     <Compile Include="Connection\Helpers\ConnectionHelper.cs" />
     <Compile Include="Connection\Helpers\ConverterModelEntityHelper.cs" />
+    <Compile Include="Connection\Helpers\MySqlConnectionDriverHelper.cs" />
     <Compile Include="Connection\Parameters\ConnectionParameters.cs" />
     <Compile Include="Repository\Entities\EntitiesAttributes.cs" />
     <Compile Include="Repository\Entities\EntitiesColumnAttributes.cs" />
