@@ -21,7 +21,6 @@ namespace ConvORM.Connection.Classes.CommandBuilders
             StringBuilder sql = new StringBuilder();
 
             sql.Append("SELECT ");
-            sql.Append(modelEntity.TableName);
 
             sql.Append(GetSqlFields());
 
@@ -46,7 +45,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                 sqlFields.Append(",");
             }
 
-            sqlFields.Remove(sqlFields.Length - 2, 1);
+            sqlFields.Remove(sqlFields.Length - 1, 1);
 
             return sqlFields.ToString();
         }

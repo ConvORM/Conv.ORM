@@ -52,12 +52,6 @@ namespace ConvORM.Connection.Drivers
                 Console.WriteLine("Query: " + sql);
             #endif
 
-            MySqlCommand lastId;
-            MySqlDataReader lid = null;
-            lastId = new MySqlCommand();
-            lastId.Connection = Connection;
-            lastId.CommandText = ("SELECT LAST_INSERT_ID()");
-
             foreach (string key in parameters.Keys)
             {
                 command.Parameters.AddWithValue(key, parameters[key]);
@@ -68,11 +62,10 @@ namespace ConvORM.Connection.Drivers
             try
             {
                 Connection.Open();
-                command.ExecuteNonQuery();
-                lid = lastId.ExecuteReader(CommandBehavior.CloseConnection);
-                Connection.Close();
-
-                return lid.GetInt32(0);
+                int rowsAffected = command.ExecuteNonQuery();
+                Console.WriteLine("Execute Non Query: OK");
+                Console.WriteLine("Number of rows affected: " + rowsAffected.ToString());
+                return rowsAffected;
             }
             catch (Exception e)
             {
@@ -80,6 +73,10 @@ namespace ConvORM.Connection.Drivers
                     Console.WriteLine("Erro: " + e.Message);
                 #endif
                 return 0;
+            }
+            finally
+            {
+                Connection.Close();
             }
         }
 
@@ -108,6 +105,36 @@ namespace ConvORM.Connection.Drivers
                 Console.WriteLine("Erro: " + e.Message);
                 #endif
                 return null;
+            }
+            finally
+            {
+                Connection.Close();
+            }
+        }
+
+        public int GetLastInsertedId()
+        {
+            MySqlCommand lastId;
+            MySqlDataReader lid = null;
+            lastId = new MySqlCommand();
+            lastId.Connection = Connection;
+            lastId.CommandText = ("SELECT LAST_INSERT_ID()");
+
+            try
+            {
+                Connection.Open();
+                lid = lastId.ExecuteReader();
+                Console.WriteLine("Execute Last ID: OK");
+                Console.WriteLine("Execute Last ID - Has Rows: " + (lid.HasRows ? "True" : "False"));
+                lid.Read();
+                return Convert.ToInt32((ulong)lid[0]);
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    Console.WriteLine("Erro: " + e.Message);
+                #endif
+                return 0;
             }
             finally
             {

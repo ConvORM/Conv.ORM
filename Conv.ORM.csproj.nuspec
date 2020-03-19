@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Conv.ORM</id>
-    <version>1.0.14-beta</version>
+    <version>1.0.20-beta</version>
     <authors>luism</authors>
     <owners>luism</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

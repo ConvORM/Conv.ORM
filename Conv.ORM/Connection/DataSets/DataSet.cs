@@ -79,14 +79,18 @@ namespace ConvORM.Connection.DataSets
         private Entity ExecuteInsert(Entity entity)
         {
             CommandBuilder commandBuilder = new CommandBuilder(modelEntity);
-            int lastInsertedId = _connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues), parametersValues);
-            QueryConditionsBuilder conditionsBuilder = new QueryConditionsBuilder();
-            foreach (var column in modelEntity.GetPrimaryFields())
+            if (_connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues), parametersValues) > 0)
             {
-                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
+                int lastInsertedId = _connection.ConnectionDriver().GetLastInsertedId();
+                QueryConditionsBuilder conditionsBuilder = new QueryConditionsBuilder();
+                foreach (var column in modelEntity.GetPrimaryFields())
+                {
+                    conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
+                }
+                return _connection.ConnectionDriver().ExecuteQuery(commandBuilder.GetSqlSelect(conditionsBuilder), entity.GetType());
             }
-            return _connection.ConnectionDriver().ExecuteQuery(commandBuilder.GetSqlSelect(conditionsBuilder), entity.GetType());
-            
+            else
+                return null;           
 
         }
     }

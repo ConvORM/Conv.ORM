@@ -60,12 +60,11 @@ namespace ConvORM.Connection.Helpers
                 object[] attributes = field.GetCustomAttributes(true);
                 foreach(object attribute in attributes)
                 {
-                    if (attribute is EntitiesColumnAttributes)
+                    if (attribute is EntitiesColumnAttributes entitiesColumnAttributes)
                     {
-                        EntitiesColumnAttributes entitiesColumnAttributes = (EntitiesColumnAttributes)attribute;
                         ColumnModelEntity columnModelEntity = new ColumnModelEntity();
 
-                        columnModelEntity.ColumnName = entitiesColumnAttributes.Name == null ? field.Name : entitiesColumnAttributes.Name;
+                        columnModelEntity.ColumnName = entitiesColumnAttributes.Name ?? field.Name;
                         columnModelEntity.Value = field.GetValue(entity);
                         columnModelEntity.DataType = entitiesColumnAttributes.DataType == EDataTypes.None ? ConvertSystemTypeToDataType(field.FieldType) : entitiesColumnAttributes.DataType;
                         columnModelEntity.MaxSize = entitiesColumnAttributes.MaxSize;
@@ -77,6 +76,15 @@ namespace ConvORM.Connection.Helpers
                         ListColumnModelEntity.Add(columnModelEntity);
                     }
                 }
+                if (attributes.Length == 0)
+                {
+                    ColumnModelEntity columnModelEntity = new ColumnModelEntity();
+                    columnModelEntity.ColumnName = field.Name;
+                    columnModelEntity.DataType = ConvertSystemTypeToDataType(field.FieldType);
+                    columnModelEntity.Value = field.GetValue(entity);
+                    ListColumnModelEntity.Add(columnModelEntity);
+                }
+
             }
 
             return ListColumnModelEntity;

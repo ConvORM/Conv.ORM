@@ -42,15 +42,22 @@ namespace ConvORM.Connection
         static public Connection GetConnection(string name)
         {
             Initialize();
-            Connection connection = LocateConnection(name);
-
-            if (connection == null)
+            if ((name == "") || (name == null))
             {
-                ConnectionParameters parameters = connectionsParametersFile.GetConnectionParameters(name);
-                connection = GetNewConnection(parameters);
+                return GetConnection();
             }
+            else
+            {
+                Connection connection = LocateConnection(name);
 
-            return connection;
+                if (connection == null)
+                {
+                    ConnectionParameters parameters = connectionsParametersFile.GetConnectionParameters(name);
+                    connection = GetNewConnection(parameters);
+                }
+
+                return connection;
+            }
         }
 
         static public Connection GetConnection(EConnectionDriverTypes type)

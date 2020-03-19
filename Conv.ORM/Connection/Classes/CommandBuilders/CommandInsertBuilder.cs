@@ -46,7 +46,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                 sqlFields.Append(columnModelEntity.ColumnName);
                 sqlFields.Append(",");
 
-                string parameter = "@" + columnModelEntity.ColumnName;
+                string parameter = "?" + columnModelEntity.ColumnName;
 
                 sqlValues.Append(parameter);
                 sqlValues.Append(",");
@@ -55,14 +55,14 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
             }
 
-            sqlFields.Remove(sqlFields.Length - 2, 1);
+            sqlFields.Remove(sqlFields.Length - 1, 1);
             sqlFields.Append(") ");
 
-            sqlValues.Remove(sqlFields.Length - 2, 1);
+            sqlValues.Remove(sqlValues.Length - 1, 1);
             sqlValues.Append(") ");
 
             fields = sqlFields.ToString();
-            values = sqlFields.ToString();
+            values = sqlValues.ToString();
         }
     }
 }

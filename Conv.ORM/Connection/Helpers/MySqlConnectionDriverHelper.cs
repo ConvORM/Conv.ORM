@@ -13,21 +13,25 @@ namespace ConvORM.Connection.Helpers
 
             while(reader.Read())
             {
-                foreach(PropertyInfo property in type.GetProperties())
+                foreach(FieldInfo field in type.GetFields())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        if (property.Name == reader.GetName(i))
+                        if (field.Name == reader.GetName(i))
                         {
-                            if (reader.GetValue(i).GetType() == property.PropertyType)
+                            if (reader.GetValue(i).GetType() == field.FieldType)
                             {
-                                property.SetValue(teste, reader.GetValue(i));
+                                field.SetValue(teste, reader.GetValue(i));
                                 break;
+                            }
+                            else if (CompatibilityFormat(reader.GetValue(i), field.FieldType, out object convertedValue))
+                            {
+                                field.SetValue(teste, convertedValue);
                             }
                             else
                             {
                                 #if DEBUG
-                                Console.WriteLine(property.Name + "in query return if wrong type");
+                                Console.WriteLine(field.Name + " in query return if wrong type. Type returned in query result: " + reader.GetValue(i).GetType().ToString() + " Type of entity field: " + field.FieldType.ToString());
                                 #endif
                             }
                         }
@@ -37,6 +41,20 @@ namespace ConvORM.Connection.Helpers
 
             return (Entity)teste;
             
+        }
+
+        private bool CompatibilityFormat(object valueFromReader, Type typeOfEntityField, out object convertedValue)
+        {
+            convertedValue = null;
+            if (valueFromReader.GetType().Name == "SByte")
+            {
+                if (typeOfEntityField.Name ==  "Boolean")
+                {
+                    convertedValue = ((sbyte)valueFromReader) == 1;                    
+                }
+            }
+
+            return convertedValue != null;
         }
     }
 }

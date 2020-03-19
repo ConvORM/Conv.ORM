@@ -11,7 +11,6 @@ namespace ConvORM.Connection.Drivers.Interfaces
         int ExecuteCommand(string sql);
         int ExecuteCommand(string sql, Dictionary<string, object> parameters);
         Entity ExecuteQuery(string sql, Type entityType);
-
-
+        int GetLastInsertedId();
     }
 }

@@ -14,7 +14,7 @@ namespace ConvORM.Connection.Classes
         }
 
         internal string GetSqlInsert(out Dictionary<string, object> parametersValues)
-        {
+         {
             CommandInsertBuilder commandInsertBuilder = new CommandInsertBuilder(modelEntity);
             return commandInsertBuilder.GetSqlInsert(out parametersValues);
         }
