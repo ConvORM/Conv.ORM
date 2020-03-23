@@ -4,10 +4,10 @@ using System;
 
 namespace ConvORM.Connection.Helpers
 {
-    static class ConnectionHelper
+    internal static class ConnectionHelper
     {
-        const string ConnectionInitCode = "A";
-        internal static ConnectionException HandlerMySQLException(MySqlException myEx)
+        private const string ConnectionInitCode = "A";
+        internal static ConnectionException HandlerMySqlException(MySqlException myEx)
         {
             if (myEx.Message.Contains("Unable to connect to any of the specified MySQL hosts"))
             {

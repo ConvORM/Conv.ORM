@@ -5,7 +5,7 @@ namespace ConvORM.Connection.Classes
 {
     public class QueryConditionsBuilder
     {
-        internal List<QueryCondition> QueryConditionList;
+        internal readonly List<QueryCondition> QueryConditionList;
         
         public QueryConditionsBuilder()
         {

@@ -4,7 +4,7 @@ namespace ConvORM.Repository
 {
     public class Repository
     {
-        private Entity _Entity;
+        private Entity _entity;
 
         public Entity Insert(Entity entity)
         {

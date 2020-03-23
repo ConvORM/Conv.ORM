@@ -5,22 +5,22 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 {
     internal class CommandInsertBuilder
     {
-        private ModelEntity modelEntity;
+        private readonly ModelEntity _modelEntity;
 
         public CommandInsertBuilder(ModelEntity model)
         {
-            modelEntity = model;
+            _modelEntity = model;
         }
 
         internal string GetSqlInsert(out Dictionary<string, object> parametersValues)
         {
-            StringBuilder sql = new StringBuilder();
+            var sql = new StringBuilder();
 
             sql.Append("INSERT INTO ");
-            sql.Append(modelEntity.TableName);
+            sql.Append(_modelEntity.TableName);
 
-            GetSqlFieldsAndParameters(out string fields,
-                                      out string values,
+            GetSqlFieldsAndParameters(out var fields,
+                                      out var values,
                                       out parametersValues);
 
             sql.Append(fields);
@@ -36,17 +36,17 @@ namespace ConvORM.Connection.Classes.CommandBuilders
         {
             parametersValues = new Dictionary<string, object>();
 
-            StringBuilder sqlFields = new StringBuilder();
-            StringBuilder sqlValues = new StringBuilder();
+            var sqlFields = new StringBuilder();
+            var sqlValues = new StringBuilder();
 
             sqlFields.Append(" (");
             sqlValues.Append(" (");
-            foreach (ColumnModelEntity columnModelEntity in modelEntity.ColumnsModelEntity)
+            foreach (var columnModelEntity in _modelEntity.ColumnsModelEntity)
             {
                 sqlFields.Append(columnModelEntity.ColumnName);
                 sqlFields.Append(",");
 
-                string parameter = "?" + columnModelEntity.ColumnName;
+                var parameter = "?" + columnModelEntity.ColumnName;
 
                 sqlValues.Append(parameter);
                 sqlValues.Append(",");

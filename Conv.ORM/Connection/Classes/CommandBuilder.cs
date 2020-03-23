@@ -6,22 +6,22 @@ namespace ConvORM.Connection.Classes
 {
     internal class CommandBuilder
     {
-        private ModelEntity modelEntity; 
+        private readonly ModelEntity _modelEntity; 
 
         public CommandBuilder(ModelEntity model)
         {
-            modelEntity = model;
+            _modelEntity = model;
         }
 
         internal string GetSqlInsert(out Dictionary<string, object> parametersValues)
          {
-            CommandInsertBuilder commandInsertBuilder = new CommandInsertBuilder(modelEntity);
+            var commandInsertBuilder = new CommandInsertBuilder(_modelEntity);
             return commandInsertBuilder.GetSqlInsert(out parametersValues);
         }
 
         internal string GetSqlSelect(QueryConditionsBuilder queryConditionsBuilder)
         {
-            CommandSelectBuilder commandSelectBuilder = new CommandSelectBuilder(modelEntity, queryConditionsBuilder);
+            var commandSelectBuilder = new CommandSelectBuilder(_modelEntity, queryConditionsBuilder);
             return commandSelectBuilder.GetSqlSelect();
         }
     }

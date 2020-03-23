@@ -7,25 +7,25 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 {
     internal class CommandSelectBuilder
     {
-        private ModelEntity modelEntity;
-        private QueryConditionsBuilder queryConditionsBuilder;
+        private readonly ModelEntity _modelEntity;
+        private readonly QueryConditionsBuilder _queryConditionsBuilder;
 
         public CommandSelectBuilder(ModelEntity model, QueryConditionsBuilder queryConditions)
         {
-            modelEntity = model;
-            queryConditionsBuilder = queryConditions;
+            _modelEntity = model;
+            _queryConditionsBuilder = queryConditions;
         }
 
         internal string GetSqlSelect()
         {
-            StringBuilder sql = new StringBuilder();
+            var sql = new StringBuilder();
 
             sql.Append("SELECT ");
 
             sql.Append(GetSqlFields());
 
             sql.Append(" FROM ");
-            sql.Append(modelEntity.TableName);
+            sql.Append(_modelEntity.TableName);
 
             sql.Append(" WHERE ");
             sql.Append(GetWhere());
@@ -35,11 +35,11 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
         private string GetSqlFields()
         {
-            StringBuilder sqlFields = new StringBuilder();
+            var sqlFields = new StringBuilder();
 
-            foreach (ColumnModelEntity columnModelEntity in modelEntity.ColumnsModelEntity)
+            foreach (var columnModelEntity in _modelEntity.ColumnsModelEntity)
             {
-                sqlFields.Append(modelEntity.TableName);
+                sqlFields.Append(_modelEntity.TableName);
                 sqlFields.Append(".");
                 sqlFields.Append(columnModelEntity.ColumnName);
                 sqlFields.Append(",");
@@ -52,16 +52,16 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
         private string GetWhere()
         {
-            StringBuilder sqlwhere = new StringBuilder();
-            foreach(QueryCondition condition in queryConditionsBuilder.QueryConditionList)
+            var sqlWhere = new StringBuilder();
+            foreach(var condition in _queryConditionsBuilder.QueryConditionList)
             {
-                sqlwhere.Append(condition.Field);
+                sqlWhere.Append(condition.Field);
 
                 switch (condition.Type)
                 {
                     case EConditionTypes.In:
-                        sqlwhere.Append(" IN ");
-                        sqlwhere.Append(GetSqlIn(condition.Value));
+                        sqlWhere.Append(" IN ");
+                        sqlWhere.Append(GetSqlIn(condition.Value));
                         break;
                     case EConditionTypes.Between:
                         break;
@@ -76,8 +76,8 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                     case EConditionTypes.MoreThanOrEquals:
                         break;
                     case EConditionTypes.Equals:
-                        sqlwhere.Append(" = ");
-                        sqlwhere.Append(ConvertValue(condition.Value));
+                        sqlWhere.Append(" = ");
+                        sqlWhere.Append(ConvertValue(condition.Value));
                         break;
                     case EConditionTypes.Not:
                         break;
@@ -89,49 +89,44 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
             }
 
-            return sqlwhere.ToString();
+            return sqlWhere.ToString();
 
         }
 
         private string GetSqlIn(object valueList)
         {
-            StringBuilder sqlIn = new StringBuilder();
-            if (valueList is List<string>)
+            var sqlIn = new StringBuilder();
+            switch (valueList)
             {
-                sqlIn.Append("('");
-                sqlIn.Append(string.Join("','", (List<string>)valueList));
-                sqlIn.Append("')");
-
+                case List<string> list:
+                    sqlIn.Append("('");
+                    sqlIn.Append(string.Join("','", list));
+                    sqlIn.Append("')");
+                    break;
+                case List<int> _:
+                    sqlIn.Append("(");
+                    sqlIn.Append(string.Join(",", (List<string>)valueList));
+                    sqlIn.Append(")");
+                    break;
+                default:
+                    throw new System.Exception("The condition of type IN require a list of string or int");
             }
-            else if (valueList is List<int>)
-            {
-                sqlIn.Append("(");
-                sqlIn.Append(string.Join(",", (List<string>)valueList));
-                sqlIn.Append(")");                
-            }
-            else
-                throw new System.Exception("The condition of type IN require a list of string or int");
 
             return sqlIn.ToString();
         }
 
-        private string ConvertValue(object value)
+        private static string ConvertValue(object value)
         {
-            if (value is int)
+            switch (value)
             {
-                return ((int)value).ToString();
-            }
-            else if (value is string)
-            {
-                return "'" + (string)value + "'";
-            }
-            else if (value is DateTime)
-            {
-                return "'" + ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            }
-            else
-            {
-                return "'" + value.ToString() + "'";
+                case int i:
+                    return i.ToString();
+                case string s:
+                    return "'" + s + "'";
+                case DateTime time:
+                    return "'" + time.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                default:
+                    return "'" + value.ToString() + "'";
             }
         }
 

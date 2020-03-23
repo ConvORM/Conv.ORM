@@ -7,39 +7,35 @@ namespace ConvORM.Connection
 {
     public static class ConnectionFactory
     {
-        static private Dictionary<string, Connection> Connections;
-        static private ConnectionsParametersFile connectionsParametersFile;
+        private static Dictionary<string, Connection> _connections;
+        private static ConnectionsParametersFile _connectionsParametersFile;
 
-        static internal void AddConnection(Connection connection, string name)
+        internal static void AddConnection(Connection connection, string name)
         {
-            Connections.Add(name, connection);
+            _connections.Add(name, connection);
         }
 
-        static public Connection GetConnection()
+        private static Connection GetConnection()
         {
             Initialize();
-            Connection connection = LocateConnection();
+            var connection = LocateConnection();
 
-            if (connection == null)
-            {
-                ConnectionParameters parameters = connectionsParametersFile.GetFirstConnectionParameter();
-                connection = GetNewConnection(parameters);
-            }
+            if (connection != null) return connection;
+            var parameters = _connectionsParametersFile.GetFirstConnectionParameter();
+            connection = GetNewConnection(parameters);
 
             return connection;
-
         }
 
-        static public Connection GetConnection(ConnectionParameters parameters)
+        public static Connection GetConnection(ConnectionParameters parameters)
         {
             Initialize();
-            Connection connection = LocateConnection(parameters);
+            var connection = LocateConnection(parameters);
 
-            return connection == null ? GetNewConnection(parameters) : connection;
-  
+            return connection ?? GetNewConnection(parameters);
         }
 
-        static public Connection GetConnection(string name)
+        public static Connection GetConnection(string name)
         {
             Initialize();
             if ((name == "") || (name == null))
@@ -48,93 +44,70 @@ namespace ConvORM.Connection
             }
             else
             {
-                Connection connection = LocateConnection(name);
+                var connection = LocateConnection(name);
 
-                if (connection == null)
-                {
-                    ConnectionParameters parameters = connectionsParametersFile.GetConnectionParameters(name);
-                    connection = GetNewConnection(parameters);
-                }
+                if (connection != null) return connection;
+                var parameters = _connectionsParametersFile.GetConnectionParameters(name);
+                connection = GetNewConnection(parameters);
 
                 return connection;
             }
         }
 
-        static public Connection GetConnection(EConnectionDriverTypes type)
+        public static Connection GetConnection(EConnectionDriverTypes type)
         {
             {
                 Initialize();
-                Connection connection = LocateConnection(type);
+                var connection = LocateConnection(type);
 
-                if (connection == null)
-                {
-                    ConnectionParameters parameters = connectionsParametersFile.GetConnectionParameters(type);
-                    connection = GetNewConnection(parameters);
-                }
+                if (connection != null) return connection;
+                var parameters = _connectionsParametersFile.GetConnectionParameters(type);
+                connection = GetNewConnection(parameters);
 
                 return connection;
             }
         }
 
-        static private Connection GetNewConnection(ConnectionParameters parameters)
+        private static Connection GetNewConnection(ConnectionParameters parameters)
         {
             return new Connection(parameters).GetConnection();
         }
 
-        static private Connection LocateConnection()
+        private static Connection LocateConnection()
         {
-            if (Connections.Count == 0)
+            if (_connections.Count == 0)
                 return null;
             else
             {
-                string firstKey = Connections.Keys.First();
-                return Connections[firstKey];
+                var firstKey = _connections.Keys.First();
+                return _connections[firstKey];
             }
         }
 
-        static private Connection LocateConnection(ConnectionParameters parameters)
+        private static Connection LocateConnection(ConnectionParameters parameters)
         {
-            foreach (Connection connection in Connections.Values)
-            {
-                if (connection.Parameters == parameters)
-                    return connection;
-            }
-
-            return null;
+            return _connections.Values.FirstOrDefault(connection => connection.Parameters == parameters);
         }
 
-        static private Connection LocateConnection(string name)
+        private static Connection LocateConnection(string name)
         {
-            foreach (Connection connection in Connections.Values)
-            {
-                if (connection.Parameters.Name == name)
-                    return connection;
-            }
-
-            return null;
+            return _connections.Values.FirstOrDefault(connection => connection.Parameters.Name == name);
         }
 
-        static private Connection LocateConnection(EConnectionDriverTypes type)
+        private static Connection LocateConnection(EConnectionDriverTypes type)
         {
-            foreach (Connection connection in Connections.Values)
-            {
-                if (connection.Parameters.ConnectionDriverType == type)
-                    return connection;
-            }
-
-            return null;
+            return _connections.Values.FirstOrDefault(connection => connection.Parameters.ConnectionDriverType == type);
         }
 
-
-        static private void Initialize()
+        private static void Initialize()
         {
-            if (Connections == null)
+            if (_connections == null)
             {
-                Connections = new Dictionary<string, Connection>();
+                _connections = new Dictionary<string, Connection>();
             }
 
-            if (connectionsParametersFile == null)
-                connectionsParametersFile = new ConnectionsParametersFile();
+            if (_connectionsParametersFile == null)
+                _connectionsParametersFile = new ConnectionsParametersFile();
         }
             
     }

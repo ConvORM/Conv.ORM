@@ -10,35 +10,34 @@ using System.Data;
 
 namespace ConvORM.Connection.Drivers
 {
-    class MySqlConnectionDriver : IConnectionDriver
+    internal class MySqlConnectionDriver : IConnectionDriver
     {
-        private MySqlConnection Connection;
-        private MySqlConnectionDriverHelper helper;
+        private MySqlConnection _connection;
+        private readonly MySqlConnectionDriverHelper _helper;
 
         public MySqlConnectionDriver()
         {
-            helper = new MySqlConnectionDriverHelper();
+            _helper = new MySqlConnectionDriverHelper();
         }
-
 
         public bool Connect(ConnectionParameters parameters)
         {
-            Connection = new MySqlConnection(GenerateConnectionString(parameters));
+            _connection = new MySqlConnection(GenerateConnectionString(parameters));
             try
             {
-                Connection.Open();
-                Connection.Close();
+                _connection.Open();
+                _connection.Close();
                 return true;
             }
             catch (MySqlException ex)
             {
-                throw ConnectionHelper.HandlerMySQLException(ex);
+                throw ConnectionHelper.HandlerMySqlException(ex);
             }
         }
 
         public int ExecuteCommand(string sql)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public int ExecuteCommand(string sql, Dictionary<string, object> parameters)
@@ -52,17 +51,17 @@ namespace ConvORM.Connection.Drivers
                 Console.WriteLine("Query: " + sql);
             #endif
 
-            foreach (string key in parameters.Keys)
+            foreach (var key in parameters.Keys)
             {
                 command.Parameters.AddWithValue(key, parameters[key]);
             }
 
-            command.Connection = Connection;
+            command.Connection = _connection;
 
             try
             {
-                Connection.Open();
-                int rowsAffected = command.ExecuteNonQuery();
+                _connection.Open();
+                var rowsAffected = command.ExecuteNonQuery();
                 Console.WriteLine("Execute Non Query: OK");
                 Console.WriteLine("Number of rows affected: " + rowsAffected.ToString());
                 return rowsAffected;
@@ -70,19 +69,19 @@ namespace ConvORM.Connection.Drivers
             catch (Exception e)
             {
                 #if DEBUG
-                    Console.WriteLine("Erro: " + e.Message);
+                    Console.WriteLine("Error: " + e.Message);
                 #endif
                 return 0;
             }
             finally
             {
-                Connection.Close();
+                _connection.Close();
             }
         }
 
         public Entity ExecuteQuery(string sql, Type entityType)
         {
-            MySqlCommand command = new MySqlCommand
+            var command = new MySqlCommand
             {
                 CommandText = sql
             };
@@ -91,39 +90,35 @@ namespace ConvORM.Connection.Drivers
             Console.WriteLine("Query: " + sql);
             #endif
 
-            command.Connection = Connection;
+            command.Connection = _connection;
 
             try
             {
-                Connection.Open();
-                MySqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
-                return helper.ConvertReaderToEntity(reader, entityType);
+                _connection.Open();
+                var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return _helper.ConvertReaderToEntity(reader, entityType);
             }
             catch (Exception e)
             {
                 #if DEBUG
-                Console.WriteLine("Erro: " + e.Message);
+                Console.WriteLine("Error: " + e.Message);
                 #endif
                 return null;
             }
             finally
             {
-                Connection.Close();
+                _connection.Close();
             }
         }
 
         public int GetLastInsertedId()
         {
-            MySqlCommand lastId;
-            MySqlDataReader lid = null;
-            lastId = new MySqlCommand();
-            lastId.Connection = Connection;
-            lastId.CommandText = ("SELECT LAST_INSERT_ID()");
+            var lastId = new MySqlCommand {Connection = _connection, CommandText = ("SELECT LAST_INSERT_ID()")};
 
             try
             {
-                Connection.Open();
-                lid = lastId.ExecuteReader();
+                _connection.Open();
+                var lid = lastId.ExecuteReader();
                 Console.WriteLine("Execute Last ID: OK");
                 Console.WriteLine("Execute Last ID - Has Rows: " + (lid.HasRows ? "True" : "False"));
                 lid.Read();
@@ -132,23 +127,23 @@ namespace ConvORM.Connection.Drivers
             catch (Exception e)
             {
                 #if DEBUG
-                    Console.WriteLine("Erro: " + e.Message);
+                    Console.WriteLine("Error: " + e.Message);
                 #endif
                 return 0;
             }
             finally
             {
-                Connection.Close();
+                _connection.Close();
             }
         }
 
         public Entity Insert(Entity entity)
         {
-            ModelEntity modelEntity = Converter.EntityToModelEntity(entity);
-            throw new System.NotImplementedException();
+            Converter.EntityToModelEntity(entity);
+            throw new NotImplementedException();
         }
 
-        private string GenerateConnectionString(ConnectionParameters parameters)
+        private static string GenerateConnectionString(ConnectionParameters parameters)
         {
             return "Server=" + parameters.Host + ";Port=" + parameters.Port + ";Database=" + parameters.Database + ";Uid=" + parameters.User + ";Pwd = " + parameters.Password + ";";
         }

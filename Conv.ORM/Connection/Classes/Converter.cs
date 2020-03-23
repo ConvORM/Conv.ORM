@@ -3,14 +3,15 @@ using ConvORM.Repository;
 
 namespace ConvORM.Connection.Classes
 {
-    static class Converter
+    internal static class Converter
     {
-        static internal ModelEntity EntityToModelEntity(Entity entity)
+        internal static ModelEntity EntityToModelEntity(Entity entity)
         {
-            ConverterModelEntityHelper helper = new ConverterModelEntityHelper(entity);
-            ModelEntity model = new ModelEntity();
-            model.TableName = helper.GetTableName();
-            model.ColumnsModelEntity = helper.GetColumnsModelEntity();
+            var helper = new ConverterModelEntityHelper(entity);
+            var model = new ModelEntity
+            {
+                TableName = helper.GetTableName(), ColumnsModelEntity = helper.GetColumnsModelEntity()
+            };
             return model;
         }
     }

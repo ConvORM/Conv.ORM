@@ -7,11 +7,10 @@ namespace ConvORM.Connection
 {
     public class Connection
     {
-        //Propertys
         public ConnectionParameters Parameters { get; private set; }
-        public bool Connected { get; private set; }
+        private bool Connected { get; set; }
 
-        private IConnectionDriver _ConnectionDriver;
+        private IConnectionDriver _connectionDriver;
 
         public Connection(ConnectionParameters parameters)
         {
@@ -20,17 +19,17 @@ namespace ConvORM.Connection
 
         internal IConnectionDriver ConnectionDriver()
         {
-            return _ConnectionDriver;
+            return _connectionDriver;
         }
 
         public Connection GetConnection()
         {
-            if (_ConnectionDriver == null)
+            if (_connectionDriver == null)
             {
                 LoadConnectionDriver();
             }
                
-            Connected = _ConnectionDriver.Connect(Parameters);
+            Connected = _connectionDriver.Connect(Parameters);
 
             if (Connected)
                 ConnectionFactory.AddConnection(this, "");
@@ -44,19 +43,19 @@ namespace ConvORM.Connection
             switch (Parameters.ConnectionDriverType)
             {
                 case EConnectionDriverTypes.ecdtFirebird:
-                    _ConnectionDriver = (IConnectionDriver) new FirebirdConnectionDriver();
+                    _connectionDriver = new FirebirdConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtMySql:
-                    _ConnectionDriver = new MySqlConnectionDriver();
+                    _connectionDriver = new MySqlConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtPostgreeSQL:
-                    _ConnectionDriver = (IConnectionDriver) new PostgreeSQLConnectionDriver();
+                    _connectionDriver = new PostgreeSqlConnectionDriver();
                     break;
                 case EConnectionDriverTypes.ecdtSQLServer:
-                    _ConnectionDriver = (IConnectionDriver) new SQLServerConnectionDriver();
+                    _connectionDriver = new SqlServerConnectionDriver();
                     break;
                 default:
-                    _ConnectionDriver = null;
+                    _connectionDriver = null;
                     break;
             }
         }

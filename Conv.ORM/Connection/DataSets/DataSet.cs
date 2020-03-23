@@ -1,23 +1,22 @@
 ﻿using ConvORM.Connection.Classes;
 using ConvORM.Repository;
 using System;
-using System.Collections.Generic;
 
 namespace ConvORM.Connection.DataSets
 {
     public class DataSet
     {
-        private Entity _entity;
-        private Connection _connection;
-        private ModelEntity modelEntity;
+        private readonly Entity _entity;
+        private readonly Connection _connection;
+        private ModelEntity _modelEntity;
 
-        public DataSet(Entity entity)
+        private DataSet(Entity entity)
         {
             _entity = entity;
 
             ConvertModelEntity();
 
-            _connection = ConnectionFactory.GetConnection(modelEntity.ConnectionName);
+            _connection = ConnectionFactory.GetConnection(_modelEntity.ConnectionName);
         }
 
         public DataSet(Entity entity, Connection connection)
@@ -40,7 +39,7 @@ namespace ConvORM.Connection.DataSets
 
         public static Entity Insert(Entity entity)
         {
-            DataSet dataSet = new DataSet(entity);
+            var dataSet = new DataSet(entity);
             return dataSet.ExecuteInsert(entity);
         }
 
@@ -72,18 +71,18 @@ namespace ConvORM.Connection.DataSets
         //private methods
         private void ConvertModelEntity()
         {
-            modelEntity = Converter.EntityToModelEntity(_entity);
+            _modelEntity = Converter.EntityToModelEntity(_entity);
         }
 
 
         private Entity ExecuteInsert(Entity entity)
         {
-            CommandBuilder commandBuilder = new CommandBuilder(modelEntity);
-            if (_connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues), parametersValues) > 0)
+            var commandBuilder = new CommandBuilder(_modelEntity);
+            if (_connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
             {
-                int lastInsertedId = _connection.ConnectionDriver().GetLastInsertedId();
-                QueryConditionsBuilder conditionsBuilder = new QueryConditionsBuilder();
-                foreach (var column in modelEntity.GetPrimaryFields())
+                var lastInsertedId = _connection.ConnectionDriver().GetLastInsertedId();
+                var conditionsBuilder = new QueryConditionsBuilder();
+                foreach (var column in _modelEntity.GetPrimaryFields())
                 {
                     conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
                 }

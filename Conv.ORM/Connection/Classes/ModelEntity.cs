@@ -1,24 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ConvORM.Connection.Classes
 {
-    class ModelEntity
+    internal class ModelEntity
     {
         public string TableName { get; set; }
         public string ConnectionName { get; set; }
         public List<ColumnModelEntity> ColumnsModelEntity { get; set; }
 
-        internal List<ColumnModelEntity> GetPrimaryFields()
+        internal IEnumerable<ColumnModelEntity> GetPrimaryFields()
         {
-            List<ColumnModelEntity> ColumnsPrimary = new List<ColumnModelEntity>();
-
-            foreach (ColumnModelEntity column in ColumnsModelEntity)
-            {
-                if (column.Primary)
-                    ColumnsPrimary.Add(column);
-            }
-
-            return ColumnsPrimary;
+            return ColumnsModelEntity.Where(column => column.Primary).ToList();
         }
     }
 }
