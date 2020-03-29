@@ -4,7 +4,6 @@ using ConvORM.Repository;
 using ConvORM.Repository.Entities;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace ConvORM.Connection.Helpers
 {
@@ -12,9 +11,9 @@ namespace ConvORM.Connection.Helpers
     {
         private readonly Entity _entity;
         private readonly Type _type;
-        internal ConverterModelEntityHelper(Entity _entity)
+        internal ConverterModelEntityHelper(Entity entity)
         {
-            this._entity = _entity;
+            this._entity = entity;
             _type = this._entity.GetType();
         }
 
@@ -48,7 +47,7 @@ namespace ConvORM.Connection.Helpers
 
         internal List<ColumnModelEntity> GetColumnsModelEntity()
         {
-            var ListColumnModelEntity = new List<ColumnModelEntity>();
+            var listColumnModelEntity = new List<ColumnModelEntity>();
             var fields = _type.GetFields();
 
             foreach(var field in fields)
@@ -72,20 +71,22 @@ namespace ConvORM.Connection.Helpers
                     };
 
 
-                    ListColumnModelEntity.Add(columnModelEntity);
+                    listColumnModelEntity.Add(columnModelEntity);
                 }
 
                 if (attributes.Length != 0) continue;
                 {
-                    var columnModelEntity = new ColumnModelEntity();
-                    columnModelEntity.ColumnName = field.Name;
-                    columnModelEntity.DataType = ConvertSystemTypeToDataType(field.FieldType);
-                    columnModelEntity.Value = field.GetValue(_entity);
-                    ListColumnModelEntity.Add(columnModelEntity);
+                    var columnModelEntity = new ColumnModelEntity
+                    {
+                        ColumnName = field.Name,
+                        DataType = ConvertSystemTypeToDataType(field.FieldType),
+                        Value = field.GetValue(_entity)
+                    };
+                    listColumnModelEntity.Add(columnModelEntity);
                 }
             }
 
-            return ListColumnModelEntity;
+            return listColumnModelEntity;
         }
 
         private RelationColumnModelEntity GetRelationColumnModelEntity(EntitiesColumnRelationAttributes entitiesColumnRelationAttributes)

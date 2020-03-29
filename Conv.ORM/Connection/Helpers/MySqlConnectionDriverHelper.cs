@@ -1,7 +1,6 @@
 ﻿using ConvORM.Repository;
 using MySql.Data.MySqlClient;
 using System;
-using System.Reflection;
 
 namespace ConvORM.Connection.Helpers
 {
