@@ -10,7 +10,7 @@ namespace ConvORM.Connection.Classes
             var helper = new ConverterModelEntityHelper(entity);
             var model = new ModelEntity
             {
-                TableName = helper.GetTableName(), ColumnsModelEntity = helper.GetColumnsModelEntity()
+                TableName = helper.GetTableName(), ColumnsModelEntity = helper.GetColumnsModelEntity(), EntityType = entity.GetType()
             };
             return model;
         }

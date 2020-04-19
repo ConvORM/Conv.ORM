@@ -27,43 +27,43 @@ namespace ConvORM.Connection.DataSets
             ConvertModelEntity();
         }
 
-        public static Entity Delete(Entity entity)
+        Entity Delete(Entity entity)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity Delete(Entity entity, Connection connection)
+        Entity Delete(Entity entity, Connection connection)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity Insert(Entity entity)
+        Entity Insert(Entity entity)
         {
             var dataSet = new DataSet(entity);
             return dataSet.ExecuteInsert(entity);
         }
 
-        public static Entity Insert(Entity entity, Connection connection)
+        Entity Insert(Entity entity, Connection connection)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity SetDeleted(Entity entity)
+        Entity SetDeleted(Entity entity)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity SetDeleted(Entity entity, Connection connection)
+        Entity SetDeleted(Entity entity, Connection connection)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity Update(Entity entity)
+        Entity Update(Entity entity)
         {
             throw new NotImplementedException();
         }
 
-        public static Entity Update(Entity entity, Connection connection)
+        Entity Update(Entity entity, Connection connection)
         {
             throw new NotImplementedException();
         }

@@ -3,7 +3,7 @@ using System;
 
 namespace ConvORM.Repository.Entities
 {
-    public abstract class EntitiesColumnAttributes: Attribute
+    public class EntitiesColumnAttributes: Attribute
     {
         public string Name { get; set; }
         public EDataTypes DataType { get; set; }

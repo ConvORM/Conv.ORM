@@ -8,7 +8,7 @@ namespace ConvORM.Connection
     public class Connection
     {
         public ConnectionParameters Parameters { get; private set; }
-        private bool Connected { get; set; }
+        public bool Connected { get; set; }
 
         private IConnectionDriver _connectionDriver;
 

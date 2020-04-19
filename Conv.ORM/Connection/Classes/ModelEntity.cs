@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConvORM.Connection.Classes
@@ -7,6 +8,8 @@ namespace ConvORM.Connection.Classes
     {
         public string TableName { get; set; }
         public string ConnectionName { get; set; }
+        public Type EntityType { get; set; }
+
         public List<ColumnModelEntity> ColumnsModelEntity { get; set; }
 
         internal IEnumerable<ColumnModelEntity> GetPrimaryFields()
