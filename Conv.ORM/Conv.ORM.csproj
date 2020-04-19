@@ -95,7 +95,10 @@
     <Compile Include="Connection\ConnectionFactory.cs" />
     <Compile Include="Connection\ConnectionsParameters.cs" />
     <Compile Include="Connection\ConnectionsParametersFile.cs" />
-    <Compile Include="Connection\DataSets\DataSet.cs" />
+    <Compile Include="Connection\DataTransferor\DataSet.cs" />
+    <Compile Include="Connection\DataTransferor\DataTransferorFactory.cs" />
+    <Compile Include="Connection\DataTransferor\Interfaces\IDataTransfer.cs" />
+    <Compile Include="Connection\DataTransferor\MySqlDataTransferor.cs" />
     <Compile Include="Connection\Drivers\FirebirdConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\Interfaces\IConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\PostgreeSQLConnectionDriver.cs" />
@@ -124,5 +127,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

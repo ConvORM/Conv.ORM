@@ -15,7 +15,7 @@ namespace ConvORM.Connection
             _connections.Add(name, connection);
         }
 
-        private static Connection GetConnection()
+        public static Connection GetConnection()
         {
             Initialize();
             var connection = LocateConnection();
