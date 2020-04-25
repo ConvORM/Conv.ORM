@@ -1,6 +1,5 @@
 ﻿using ConvORM.Connection.Classes.CommandBuilders;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ConvORM.Connection.Classes
 {

@@ -1,10 +1,13 @@
-﻿using ConvORM.Connection.Classes;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using ConvORM.Connection.Classes;
 using ConvORM.Connection.DataTransferor.Interfaces;
 using ConvORM.Repository;
 
 namespace ConvORM.Connection.DataTransferor
 {
-    internal class MySqlDataTransferor: IDataTransfer
+    internal class MySqlDataTransferor : IDataTransfer
     {
         private readonly ModelEntity _modelEntity;
         private readonly Connection _connection;
@@ -24,15 +27,19 @@ namespace ConvORM.Connection.DataTransferor
         {
             var commandBuilder = new CommandBuilder(_modelEntity);
 
-            if (_connection.ConnectionDriver().ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
+            if (_connection.ConnectionDriver()
+                .ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
             {
                 var lastInsertedId = _connection.ConnectionDriver().GetLastInsertedId();
                 var conditionsBuilder = new QueryConditionsBuilder();
                 foreach (var column in _modelEntity.GetPrimaryFields())
                 {
-                    conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
+                    conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                        lastInsertedId);
                 }
-                return _connection.ConnectionDriver().ExecuteQuery(commandBuilder.GetSqlSelect(conditionsBuilder), _modelEntity.EntityType);
+
+                return _connection.ConnectionDriver().ExecuteScalarQuery(commandBuilder.GetSqlSelect(conditionsBuilder),
+                    _modelEntity.EntityType);
             }
             else
                 return null;
@@ -47,6 +54,13 @@ namespace ConvORM.Connection.DataTransferor
         {
             throw new System.NotImplementedException();
         }
-        
+
+        public IList GetAll()
+        {
+            return _connection.ConnectionDriver()
+                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(new QueryConditionsBuilder()),
+                    _modelEntity.EntityType);
+        }
     }
+
 }

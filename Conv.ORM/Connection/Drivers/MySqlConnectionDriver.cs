@@ -5,8 +5,10 @@ using ConvORM.Connection.Parameters;
 using ConvORM.Repository;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace ConvORM.Connection.Drivers
 {
@@ -79,7 +81,7 @@ namespace ConvORM.Connection.Drivers
             }
         }
 
-        public Entity ExecuteQuery(string sql, Type entityType)
+        public Entity ExecuteScalarQuery(string sql, Type entityType)
         {
             var command = new MySqlCommand
             {
@@ -96,12 +98,44 @@ namespace ConvORM.Connection.Drivers
             {
                 _connection.Open();
                 var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
-                return _helper.ConvertReaderToEntity(reader, entityType);
+                return MySqlConnectionDriverHelper.ConvertReaderToEntity(reader, entityType);
             }
             catch (Exception e)
             {
                 #if DEBUG
                 Console.WriteLine("Error: " + e.Message);
+                #endif
+                return null;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public IList ExecuteQuery(string sql, Type entityType)
+        {
+            var command = new MySqlCommand
+            {
+                CommandText = sql
+            };
+
+            #if DEBUG
+                Console.WriteLine("Query: " + sql);
+            #endif
+
+            command.Connection = _connection;
+
+            try
+            {
+                _connection.Open();
+                var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return MySqlConnectionDriverHelper.ConvertReaderToCollectionOfEntity(reader, entityType);
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    Console.WriteLine("Error: " + e.Message);
                 #endif
                 return null;
             }

@@ -14,11 +14,10 @@ namespace ConvORM.Connection.Classes
 
         public QueryConditionsBuilder AddQueryCondition(string field, EConditionTypes conditionTypes, object value, ELogicalConditionTypes logicalConditionTypes = ELogicalConditionTypes.And)
         {
-            QueryCondition queryCondition = new QueryCondition();
-            queryCondition.Field = field;
-            queryCondition.Type = conditionTypes;
-            queryCondition.Value = value;
-            queryCondition.LogicalType = logicalConditionTypes;
+            var queryCondition = new QueryCondition
+            {
+                Field = field, Type = conditionTypes, Value = value, LogicalType = logicalConditionTypes
+            };
 
             QueryConditionList.Add(queryCondition);
 

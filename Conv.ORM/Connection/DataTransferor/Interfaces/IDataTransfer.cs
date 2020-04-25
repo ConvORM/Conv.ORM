@@ -1,4 +1,6 @@
-﻿using ConvORM.Repository;
+﻿using System.Collections;
+using System.Collections.Generic;
+using ConvORM.Repository;
 
 namespace ConvORM.Connection.DataTransferor.Interfaces
 {
@@ -8,5 +10,7 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
         Entity Insert();
         Entity SetDeleted();
         Entity Update();
+
+        IList GetAll();
     }
 }

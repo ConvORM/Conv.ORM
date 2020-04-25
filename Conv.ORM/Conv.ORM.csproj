@@ -110,6 +110,7 @@
     <Compile Include="Connection\Enums\ELogicalConditionTypes.cs" />
     <Compile Include="Connection\Helpers\ConnectionHelper.cs" />
     <Compile Include="Connection\Helpers\ConverterModelEntityHelper.cs" />
+    <Compile Include="Connection\Helpers\ConvORMHelper.cs" />
     <Compile Include="Connection\Helpers\MySqlConnectionDriverHelper.cs" />
     <Compile Include="Connection\Parameters\ConnectionParameters.cs" />
     <Compile Include="Repository\Entities\EntitiesAttributes.cs" />

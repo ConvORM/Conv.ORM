@@ -27,6 +27,8 @@ namespace ConvORM.Connection.Classes.CommandBuilders
             sql.Append(" FROM ");
             sql.Append(_modelEntity.TableName);
 
+            if (!HasWhere()) return sql.ToString();
+
             sql.Append(" WHERE ");
             sql.Append(GetWhere());
 
@@ -91,6 +93,11 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
             return sqlWhere.ToString();
 
+        }
+
+        private bool HasWhere()
+        {
+            return _queryConditionsBuilder.QueryConditionList.Count > 0;
         }
 
         private string GetSqlIn(object valueList)
