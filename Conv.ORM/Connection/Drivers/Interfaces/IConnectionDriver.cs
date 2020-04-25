@@ -1,7 +1,9 @@
 ﻿using ConvORM.Connection.Parameters;
 using ConvORM.Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConvORM.Connection.Drivers.Interfaces
 {
@@ -26,8 +28,15 @@ namespace ConvORM.Connection.Drivers.Interfaces
         /// </summary>
         /// <param name="sql">Sql script to run</param>
         /// <param name="entityType">Type of entity to be returned</param>
-        /// <returns>The number of rows affected</returns>
-        Entity ExecuteQuery(string sql, Type entityType);
+        /// <returns>A entity get into a result of query runs</returns>
+        Entity ExecuteScalarQuery(string sql, Type entityType);
+        /// <summary>
+        /// Executes a query command against a given database to be returned
+        /// </summary>
+        /// <param name="sql">Sql script to run</param>
+        /// <param name="entityType">Type of entity to be returned</param>
+        /// <returns></returns>
+        IList ExecuteQuery(string sql, Type entityType);
         /// <summary>
         /// Get the last inserted id
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿using ConvORM.Connection.Classes;
-using ConvORM.Connection.DataSets;
 using ConvORM.Connection.DataTransferor;
+using System.Collections;
 
 namespace ConvORM.Repository
 {
@@ -9,6 +9,11 @@ namespace ConvORM.Repository
         public Entity Insert(Entity entity)
         {
             return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Insert();
+        }
+
+        public IList GetAll(Entity entity)
+        {
+            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).GetAll();
         }
     }
 }

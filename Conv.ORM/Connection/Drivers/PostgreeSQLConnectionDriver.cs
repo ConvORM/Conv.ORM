@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ConvORM.Connection.Drivers.Interfaces;
 using ConvORM.Connection.Parameters;
 using ConvORM.Repository;
@@ -23,7 +25,12 @@ namespace ConvORM.Connection.Drivers
             throw new NotImplementedException();
         }
 
-        public Entity ExecuteQuery(string sql, Type entityType)
+        public Entity ExecuteScalarQuery(string sql, Type entityType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList ExecuteQuery(string sql, Type entityType)
         {
             throw new NotImplementedException();
         }

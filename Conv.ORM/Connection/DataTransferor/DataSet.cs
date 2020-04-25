@@ -86,7 +86,7 @@ namespace ConvORM.Connection.DataSets
                 {
                     conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals, lastInsertedId);
                 }
-                return _connection.ConnectionDriver().ExecuteQuery(commandBuilder.GetSqlSelect(conditionsBuilder), entity.GetType());
+                return _connection.ConnectionDriver().ExecuteScalarQuery(commandBuilder.GetSqlSelect(conditionsBuilder), entity.GetType());
             }
             else
                 return null;           
