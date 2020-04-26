@@ -1,6 +1,7 @@
 ﻿using ConvORM.Connection.Classes;
 using ConvORM.Connection.DataTransferor;
 using System.Collections;
+using ConvORM.Connection.Classes.QueryBuilders;
 
 namespace ConvORM.Repository
 {
@@ -11,9 +12,14 @@ namespace ConvORM.Repository
             return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Insert();
         }
 
-        public IList GetAll(Entity entity)
+        public IList FindAll(Entity entity)
         {
-            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).GetAll();
+            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).FindAll();
+        }
+
+        public IList Find(Entity entity, QueryConditionsBuilder conditionsBuilder)
+        {
+            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Find(conditionsBuilder);
         }
     }
 }

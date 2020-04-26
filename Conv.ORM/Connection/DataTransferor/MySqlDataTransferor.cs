@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConvORM.Connection.Classes;
+using ConvORM.Connection.Classes.QueryBuilders;
 using ConvORM.Connection.DataTransferor.Interfaces;
 using ConvORM.Repository;
 
@@ -34,8 +35,9 @@ namespace ConvORM.Connection.DataTransferor
                 var conditionsBuilder = new QueryConditionsBuilder();
                 foreach (var column in _modelEntity.GetPrimaryFields())
                 {
+
                     conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
-                        lastInsertedId);
+                        new object[] {lastInsertedId});
                 }
 
                 return _connection.ConnectionDriver().ExecuteScalarQuery(commandBuilder.GetSqlSelect(conditionsBuilder),
@@ -55,10 +57,17 @@ namespace ConvORM.Connection.DataTransferor
             throw new System.NotImplementedException();
         }
 
-        public IList GetAll()
+        public IList FindAll()
         {
             return _connection.ConnectionDriver()
                 .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(new QueryConditionsBuilder()),
+                    _modelEntity.EntityType);
+        }
+
+        public IList Find(QueryConditionsBuilder conditionsBuilder)
+        {
+            return _connection.ConnectionDriver()
+                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
     }

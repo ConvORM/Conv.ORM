@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ConvORM.Connection.Classes.QueryBuilders;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
@@ -63,27 +64,45 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                 {
                     case EConditionTypes.In:
                         sqlWhere.Append(" IN ");
-                        sqlWhere.Append(GetSqlIn(condition.Value));
+                        sqlWhere.Append(GetSqlIn(condition.Values));
                         break;
                     case EConditionTypes.Between:
+                        sqlWhere.Append(" BETWEEN ");
+                        sqlWhere.Append(GetSqlBetween(condition.Values));
                         break;
                     case EConditionTypes.Like:
+                        sqlWhere.Append(" LIKE ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.LessThan:
+                        sqlWhere.Append(" < ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.LessThanOrEquals:
+                        sqlWhere.Append(" <= ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.MoreThan:
+                        sqlWhere.Append(" > ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.MoreThanOrEquals:
+                        sqlWhere.Append(" >= ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.Equals:
                         sqlWhere.Append(" = ");
-                        sqlWhere.Append(ConvertValue(condition.Value));
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.Not:
+                        sqlWhere.Append(" NOT ");
+                        sqlWhere.Append(ConvertValue(condition.Values[0]));
                         break;
                     case EConditionTypes.IsNull:
+                        sqlWhere.Append(" IS null ");
+                        break;
+                    case EConditionTypes.IsNotNull:
+                        sqlWhere.Append(" IS NOT null ");
                         break;
                     default:
                         break;
@@ -95,35 +114,57 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
         }
 
+        private string GetSqlBetween(object[] conditionValues)
+        {
+            if (conditionValues.Length != 2) throw new  Exception("The condition of type BETWEEN require two values");
+
+            var sqlBetween = new StringBuilder();
+            sqlBetween.Append(" ");
+            sqlBetween.Append(ConvertValue(conditionValues[0]));
+            sqlBetween.Append(" AND ");
+            sqlBetween.Append(ConvertValue(conditionValues[1]));
+            sqlBetween.Append(" ");
+            return sqlBetween.ToString();
+        }
+
         private bool HasWhere()
         {
             return _queryConditionsBuilder.QueryConditionList.Count > 0;
         }
 
-        private string GetSqlIn(object valueList)
+        private string GetSqlIn(object[] conditionValues)
         {
+            if (!(conditionValues.Length > 0)) throw new Exception("The condition of type IN require one or more values");
+
             var sqlIn = new StringBuilder();
-            switch (valueList)
+            sqlIn.Append("(");
+            foreach (var conditionValue in conditionValues)
             {
-                case List<string> list:
-                    sqlIn.Append("('");
-                    sqlIn.Append(string.Join("','", list));
-                    sqlIn.Append("')");
-                    break;
-                case List<int> _:
-                    sqlIn.Append("(");
-                    sqlIn.Append(string.Join(",", (List<string>)valueList));
-                    sqlIn.Append(")");
-                    break;
-                default:
-                    throw new System.Exception("The condition of type IN require a list of string or int");
+                switch (conditionValue)
+                {
+                    case List<string> list:
+                        sqlIn.Append("'");
+                        sqlIn.Append(string.Join("','", list));
+                        sqlIn.Append("'");
+                        break;
+                    case List<int> _:
+                        if (sqlIn.Length > 1) sqlIn.Append(",");
+                        sqlIn.Append(string.Join(",", (List<string>) conditionValue ?? throw new InvalidOperationException()));
+                        break;
+                    default:
+                        if (sqlIn.Length > 1) sqlIn.Append(",");
+                        sqlIn.Append(ConvertValue(conditionValue));
+                        break;
+                }
             }
 
+            sqlIn.Append(") ");
             return sqlIn.ToString();
         }
 
         private static string ConvertValue(object value)
         {
+
             switch (value)
             {
                 case int i:

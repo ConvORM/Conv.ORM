@@ -11,6 +11,7 @@
         MoreThanOrEquals,
         Equals,
         Not,
-        IsNull
+        IsNull,
+        IsNotNull
     }
 }
