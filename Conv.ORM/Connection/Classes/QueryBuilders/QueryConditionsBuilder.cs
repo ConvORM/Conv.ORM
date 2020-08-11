@@ -1,7 +1,7 @@
-﻿using ConvORM.Connection.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ConvORM.Connection.Enums;
 
-namespace ConvORM.Connection.Classes
+namespace ConvORM.Connection.Classes.QueryBuilders
 {
     public class QueryConditionsBuilder
     {
@@ -12,11 +12,11 @@ namespace ConvORM.Connection.Classes
             QueryConditionList = new List<QueryCondition>();
         }
 
-        public QueryConditionsBuilder AddQueryCondition(string field, EConditionTypes conditionTypes, object value, ELogicalConditionTypes logicalConditionTypes = ELogicalConditionTypes.And)
+        public QueryConditionsBuilder AddQueryCondition(string field, EConditionTypes conditionTypes, object[] values, ELogicalConditionTypes logicalConditionTypes = ELogicalConditionTypes.And)
         {
             var queryCondition = new QueryCondition
             {
-                Field = field, Type = conditionTypes, Value = value, LogicalType = logicalConditionTypes
+                Field = field, Type = conditionTypes, Values = values, LogicalType = logicalConditionTypes
             };
 
             QueryConditionList.Add(queryCondition);
