@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using ConvORM.Connection.Classes;
 using ConvORM.Repository;
+using System.Collections;
+using ConvORM.Connection.Classes.QueryBuilders;
 
 namespace ConvORM.Connection.DataTransferor.Interfaces
 {
@@ -11,6 +12,7 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
         Entity SetDeleted();
         Entity Update();
 
-        IList GetAll();
+        IList FindAll();
+        IList Find(QueryConditionsBuilder conditionsBuilder);
     }
 }

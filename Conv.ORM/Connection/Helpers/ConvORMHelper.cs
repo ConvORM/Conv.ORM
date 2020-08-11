@@ -20,7 +20,7 @@ namespace ConvORM.Connection.Helpers
             var typeObjectIntoList = list[0].GetType();
             var fields = typeObjectIntoList.GetFields();
 
-            foreach (var field in fields)
+            foreach (var field in fields)   
             {
                 dataTable.Columns.Add(field.Name, field.FieldType);
             }

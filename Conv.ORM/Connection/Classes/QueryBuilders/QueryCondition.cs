@@ -6,7 +6,7 @@ namespace ConvORM.Connection.Classes
     {
         public string Field { get; set; }
         public EConditionTypes Type { get; set; }
-        public object Value { get; set; }
+        public object[] Values { get; set; }
         public ELogicalConditionTypes LogicalType { get; set; }
     }
 }
