@@ -19,16 +19,31 @@ namespace ConvORM.Connection.Parameters
         public string Password { get; set; }
         [XmlElement("database")]
         public string Database { get; set; }
+        [XmlElement("userintegratedsecurity")]
+        public bool UserIntegratedSecurity { get; set; }
 
-        public ConnectionParameters(string name, EConnectionDriverTypes connectionDriverType, string host, string port, string user, string password, string database)
+
+        public ConnectionParameters(string name, EConnectionDriverTypes connectionDriverType, string host, string port, string database, string user, string password)
         {
             Name = name;
             ConnectionDriverType = connectionDriverType;
             Host = host;
             Port = port;
+            Database = database;
             User = user;
             Password = password;
+        }
+        
+        public ConnectionParameters(string name, EConnectionDriverTypes connectionDriverType, string host, string port, string database, bool userIntegratedSecurity, string user, string password)
+        {
+            Name = name;
+            ConnectionDriverType = connectionDriverType;
+            Host = host;
+            Port = port;
             Database = database;
+            UserIntegratedSecurity = userIntegratedSecurity;
+            User = user;
+            Password = password;
         }
 
         public ConnectionParameters()
