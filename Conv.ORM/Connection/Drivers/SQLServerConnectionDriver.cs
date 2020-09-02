@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using ConvORM.Connection.Drivers.Interfaces;
+using ConvORM.Connection.Helpers;
 using ConvORM.Connection.Parameters;
 using ConvORM.Repository;
 
@@ -35,24 +36,13 @@ namespace ConvORM.Connection.Drivers
                 _connection.Close();
                 return true;
             }
-            catch (Exception)
+            catch (SqlException ex)
             {
 
-                throw;
+                throw ConnectionHelper.SQLconnectionException(ex);
             }
 
-            /*connection = new MySqlConnection(GenerateConnectionString(parameters));
-            try
-            {
-                _connection.Open();
-                _connection.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                throw ConnectionHelper.HandlerMySqlException(ex);
-            }*/
-        }
+                  }
 
         public int ExecuteCommand(string sql)
         {
