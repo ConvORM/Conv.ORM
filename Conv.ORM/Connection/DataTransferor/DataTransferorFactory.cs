@@ -19,7 +19,7 @@ namespace ConvORM.Connection.DataTransferor
                 case EConnectionDriverTypes.ecdtPostgreeSQL:
                     return null;
                 case EConnectionDriverTypes.ecdtSQLServer:
-                    return null;
+                    return new SqlServerDataTransferor(modelEntity, connection);
                 case EConnectionDriverTypes.ecdtNone:
                     return null;
                 default:

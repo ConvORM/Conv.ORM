@@ -51,7 +51,41 @@ namespace ConvORM.Connection.Drivers
 
         public int ExecuteCommand(string sql, Dictionary<string, object> parameters)
         {
-            throw new NotImplementedException();
+            SqlCommand command = new SqlCommand
+            {
+                CommandText = sql
+            };
+
+#if DEBUG
+            Console.WriteLine("Query: " + sql);
+#endif
+
+            foreach (var key in parameters.Keys)
+            {
+                command.Parameters.AddWithValue(key, parameters[key]);
+            }
+
+            command.Connection = _connection;
+
+            try
+            {
+                _connection.Open();
+                var rowsAffected = command.ExecuteNonQuery();
+                Console.WriteLine("Execute Non Query: OK");
+                Console.WriteLine("Number of rows affected: " + rowsAffected.ToString());
+                return rowsAffected;
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Error: " + e.Message);
+#endif
+                return 0;
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public Entity ExecuteScalarQuery(string sql, Type entityType)

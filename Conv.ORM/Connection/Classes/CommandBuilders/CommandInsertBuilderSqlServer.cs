@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
-    internal class CommandInsertBuilder
+    class CommandInsertBuilderSqlServer
     {
+
         private readonly ModelEntity _modelEntity;
 
-        public CommandInsertBuilder(ModelEntity model)
+        public CommandInsertBuilderSqlServer(ModelEntity model)
         {
             _modelEntity = model;
         }
@@ -48,7 +52,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                 sqlFields.Append(columnModelEntity.ColumnName);
                 sqlFields.Append(",");
 
-                var parameter = "?" + columnModelEntity.ColumnName;
+                var parameter = "@" + columnModelEntity.ColumnName;
 
                 sqlValues.Append(parameter);
                 sqlValues.Append(",");
@@ -68,3 +72,4 @@ namespace ConvORM.Connection.Classes.CommandBuilders
         }
     }
 }
+

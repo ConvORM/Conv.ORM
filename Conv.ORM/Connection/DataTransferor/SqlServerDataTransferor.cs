@@ -1,20 +1,22 @@
-﻿
+﻿using ConvORM.Connection.Classes;
+using ConvORM.Connection.Classes.QueryBuilders;
+using ConvORM.Repository;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ConvORM.Connection.Classes;
-using ConvORM.Connection.Classes.QueryBuilders;
-using ConvORM.Connection.DataTransferor.Interfaces;
-using ConvORM.Repository;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ConvORM.Connection.DataTransferor
+namespace ConvORM.Connection.DataTransferor.Interfaces
 {
-    internal class MySqlDataTransferor : IDataTransfer
+    class SqlServerDataTransferor :IDataTransfer
     {
+
         private readonly ModelEntity _modelEntity;
         private readonly Connection _connection;
 
-        public MySqlDataTransferor(ModelEntity modelEntity, Connection connection)
+        public SqlServerDataTransferor(ModelEntity modelEntity, Connection connection)
         {
             _modelEntity = modelEntity;
             _connection = connection;
@@ -38,7 +40,7 @@ namespace ConvORM.Connection.DataTransferor
                 {
 
                     conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
-                        new object[] {lastInsertedId});
+                        new object[] { lastInsertedId });
                 }
 
                 return _connection.ConnectionDriver().ExecuteScalarQuery(commandBuilder.GetSqlSelect(conditionsBuilder),
@@ -72,5 +74,4 @@ namespace ConvORM.Connection.DataTransferor
                     _modelEntity.EntityType);
         }
     }
-
 }
