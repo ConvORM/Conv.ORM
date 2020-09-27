@@ -24,5 +24,11 @@ namespace ConvORM.Connection.Classes
             var commandSelectBuilder = new CommandSelectBuilder(_modelEntity, queryConditionsBuilder);
             return commandSelectBuilder.GetSqlSelect();
         }
+
+        internal string GetSqlUpdate(out Dictionary<string, object> parametersValues, QueryConditionsBuilder queryConditionsBuilder)
+        {
+            var commandUpdateBuilder = new CommandUpdateBuilder(_modelEntity, queryConditionsBuilder);
+            return commandUpdateBuilder.GetSqlUpdate(out parametersValues);
+        }
     }
 }

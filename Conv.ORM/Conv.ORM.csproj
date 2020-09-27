@@ -84,6 +84,7 @@
     <Compile Include="Connection\Classes\ColumnModelEntity.cs" />
     <Compile Include="Connection\Classes\CommandBuilders\CommandSelectBuilder.cs" />
     <Compile Include="Connection\Classes\CommandBuilders\CommandInsertBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\CommandUpdateBuilder.cs" />
     <Compile Include="Connection\Classes\Converter.cs" />
     <Compile Include="Connection\Classes\ModelEntity.cs" />
     <Compile Include="Connection\Classes\QueryBuilders\QueryCondition.cs" />

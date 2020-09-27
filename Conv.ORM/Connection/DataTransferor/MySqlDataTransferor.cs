@@ -54,7 +54,23 @@ namespace ConvORM.Connection.DataTransferor
 
         public Entity Update()
         {
-            throw new System.NotImplementedException();
+            var commandBuilder = new CommandBuilder(_modelEntity);
+
+            var conditionsBuilder = new QueryConditionsBuilder();
+            foreach (var column in _modelEntity.GetPrimaryFields())
+            {
+                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                    new object[] { _modelEntity.GetPrimaryFieldValue(column.ColumnName) });
+            }
+
+            if (_connection.ConnectionDriver()
+                .ExecuteCommand(commandBuilder.GetSqlUpdate(out var parametersValues, conditionsBuilder), parametersValues) > 0)
+            {
+                var lastInsertedId = _connection.ConnectionDriver().GetLastInsertedId();
+                return Find(new int[] { lastInsertedId });
+            }
+            else
+                return null;
         }
 
         public IList FindAll()
@@ -68,6 +84,22 @@ namespace ConvORM.Connection.DataTransferor
         {
             return _connection.ConnectionDriver()
                 .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
+                    _modelEntity.EntityType);
+        }
+
+        public Entity Find(int[] ids)
+        {
+            var conditionsBuilder = new QueryConditionsBuilder();
+            int idsCount = 0;
+            foreach (var column in _modelEntity.GetPrimaryFields())
+            {
+                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                    new object[] { ids[0] });
+
+                idsCount++;
+            }
+            return _connection.ConnectionDriver()
+                .ExecuteScalarQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
     }

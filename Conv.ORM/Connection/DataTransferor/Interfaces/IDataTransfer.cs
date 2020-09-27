@@ -14,5 +14,6 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
 
         IList FindAll();
         IList Find(QueryConditionsBuilder conditionsBuilder);
+        Entity Find(int[] ids);
     }
 }
