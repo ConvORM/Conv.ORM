@@ -16,5 +16,10 @@ namespace ConvORM.Connection.Classes
         {
             return ColumnsModelEntity.Where(column => column.Primary).ToList();
         }
+
+        internal int GetPrimaryFieldValue(string primaryFieldName)
+        {
+            return (int)ColumnsModelEntity.Where(column => column.ColumnName == primaryFieldName).FirstOrDefault().Value;
+        }
     }
 }

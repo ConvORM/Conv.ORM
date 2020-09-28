@@ -21,5 +21,15 @@ namespace ConvORM.Repository
         {
             return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Find(conditionsBuilder);
         }
+
+        public Entity Find(Entity entity, int[] ids)
+        {
+            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Find(ids);
+        }
+
+        public Entity Update(Entity entity)
+        {
+            return DataTransferorFactory.GetDataTransferor(Converter.EntityToModelEntity(entity)).Update();
+        }
     }
 }
