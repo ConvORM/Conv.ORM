@@ -88,6 +88,7 @@
     <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandSelectBuilder.cs" />
     <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandInsertBuilder.cs" />
     <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandUpdateBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\CommandInsertBuilderSqlServer.cs" />
     <Compile Include="Connection\Classes\Converter.cs" />
     <Compile Include="Connection\Classes\ModelEntity.cs" />
     <Compile Include="Connection\Classes\QueryBuilders\QueryCondition.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Connection\ConnectionsParametersFile.cs" />
     <Compile Include="Connection\DataTransferor\DataTransferorFactory.cs" />
     <Compile Include="Connection\DataTransferor\Interfaces\IDataTransfer.cs" />
+    <Compile Include="Connection\DataTransferor\SqlServerDataTransferor.cs" />
     <Compile Include="Connection\DataTransferor\MySqlDataTransferor.cs" />
     <Compile Include="Connection\Drivers\FirebirdConnectionDriver.cs" />
     <Compile Include="Connection\Drivers\Interfaces\IConnectionDriver.cs" />

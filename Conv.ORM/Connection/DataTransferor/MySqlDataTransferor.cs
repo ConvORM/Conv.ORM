@@ -1,4 +1,7 @@
-﻿using ConvORM.Connection.Classes;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using ConvORM.Connection.Classes;
 using ConvORM.Connection.Classes.QueryBuilders;
 using ConvORM.Connection.DataTransferor.Interfaces;
 using ConvORM.Connection.Enums;

@@ -1,19 +1,22 @@
-﻿using ConvORM.Connection.Classes.CommandBuilders.Interfaces;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
-    internal class MySqlCommandInsertBuilder : ICommandInsertBuilder
+    class CommandInsertBuilderSqlServer
     {
+
         private readonly ModelEntity _modelEntity;
 
-        public MySqlCommandInsertBuilder(ModelEntity model)
+        public CommandInsertBuilderSqlServer(ModelEntity model)
         {
             _modelEntity = model;
         }
 
-        public string GetSqlInsert(out Dictionary<string, object> parametersValues)
+        internal string GetSqlInsert(out Dictionary<string, object> parametersValues)
         {
             var sql = new StringBuilder();
 
@@ -49,7 +52,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                 sqlFields.Append(columnModelEntity.ColumnName);
                 sqlFields.Append(",");
 
-                var parameter = "?" + columnModelEntity.ColumnName;
+                var parameter = "@" + columnModelEntity.ColumnName;
 
                 sqlValues.Append(parameter);
                 sqlValues.Append(",");
@@ -69,3 +72,4 @@ namespace ConvORM.Connection.Classes.CommandBuilders
         }
     }
 }
+
