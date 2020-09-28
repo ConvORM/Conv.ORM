@@ -38,6 +38,16 @@ namespace ConvORM.Connection.Helpers
                     "Check if:" + Environment.NewLine +
                     "- Database name was spelled correctly;");
             }
+            else if (myEx.Message.Contains("Reading from the stream has failed"))
+            {
+                //Old version
+                return new ConnectionException(
+                    ConnectionInitCode + "004",
+                    "Reading from the stream has failed" + Environment.NewLine +
+                    "  This error may be generated on try to connect in older or incompatibility version of the database engine",
+                    "Check if:" + Environment.NewLine +
+                    "- Your database engine version is listed as the compatible in our website;");
+            }
             else
             {
                 return new ConnectionException(Convert.ToString(myEx.ErrorCode), myEx.Message);

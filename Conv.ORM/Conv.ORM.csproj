@@ -82,8 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\Classes\ColumnModelEntity.cs" />
-    <Compile Include="Connection\Classes\CommandBuilders\CommandSelectBuilder.cs" />
-    <Compile Include="Connection\Classes\CommandBuilders\CommandInsertBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\Interfaces\ICommandInsertBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\Interfaces\ICommandSelectBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\Interfaces\ICommandUpdateBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandSelectBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandInsertBuilder.cs" />
+    <Compile Include="Connection\Classes\CommandBuilders\MySql\MySqlCommandUpdateBuilder.cs" />
     <Compile Include="Connection\Classes\Converter.cs" />
     <Compile Include="Connection\Classes\ModelEntity.cs" />
     <Compile Include="Connection\Classes\QueryBuilders\QueryCondition.cs" />

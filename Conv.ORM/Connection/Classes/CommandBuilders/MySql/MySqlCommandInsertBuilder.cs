@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using ConvORM.Connection.Classes.CommandBuilders.Interfaces;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
-    internal class CommandInsertBuilder
+    internal class MySqlCommandInsertBuilder : ICommandInsertBuilder
     {
         private readonly ModelEntity _modelEntity;
 
-        public CommandInsertBuilder(ModelEntity model)
+        public MySqlCommandInsertBuilder(ModelEntity model)
         {
             _modelEntity = model;
         }
 
-        internal string GetSqlInsert(out Dictionary<string, object> parametersValues)
+        public string GetSqlInsert(out Dictionary<string, object> parametersValues)
         {
             var sql = new StringBuilder();
 
