@@ -1,18 +1,14 @@
 ﻿using ConvORM.Connection.Classes;
 using ConvORM.Connection.Classes.QueryBuilders;
+using ConvORM.Connection.Enums;
 using ConvORM.Repository;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConvORM.Connection.DataTransferor.Interfaces
 {
-    class SqlServerDataTransferor :IDataTransfer
+    class SqlServerDataTransferor : IDataTransfer
     {
-
         private readonly ModelEntity _modelEntity;
         private readonly Connection _connection;
 
@@ -29,7 +25,7 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
 
         public Entity Insert()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity);
+            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer);
 
             if (_connection.ConnectionDriver()
                 .ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
@@ -39,7 +35,7 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
                 foreach (var column in _modelEntity.GetPrimaryFields())
                 {
 
-                    conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                    conditionsBuilder.AddQueryCondition(column.ColumnName, EConditionTypes.Equals,
                         new object[] { lastInsertedId });
                 }
 
@@ -63,15 +59,20 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
         public IList FindAll()
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(new QueryConditionsBuilder()),
+                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(new QueryConditionsBuilder()),
                     _modelEntity.EntityType);
         }
 
         public IList Find(QueryConditionsBuilder conditionsBuilder)
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
+                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
+        }
+
+        public Entity Find(int[] ids)
+        {
+            throw new NotImplementedException();
         }
     }
 }
