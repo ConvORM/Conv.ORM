@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using ConvORM.Connection.Classes;
+﻿using ConvORM.Connection.Classes;
 using ConvORM.Connection.Classes.QueryBuilders;
 using ConvORM.Connection.DataTransferor.Interfaces;
+using ConvORM.Connection.Enums;
 using ConvORM.Repository;
+using System.Collections;
 
 namespace ConvORM.Connection.DataTransferor
 {
@@ -26,7 +25,7 @@ namespace ConvORM.Connection.DataTransferor
 
         public Entity Insert()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity);
+            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql);
 
             if (_connection.ConnectionDriver()
                 .ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
@@ -36,7 +35,7 @@ namespace ConvORM.Connection.DataTransferor
                 foreach (var column in _modelEntity.GetPrimaryFields())
                 {
 
-                    conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                    conditionsBuilder.AddQueryCondition(column.ColumnName, EConditionTypes.Equals,
                         new object[] {lastInsertedId});
                 }
 
@@ -54,12 +53,12 @@ namespace ConvORM.Connection.DataTransferor
 
         public Entity Update()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity);
+            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql);
 
             var conditionsBuilder = new QueryConditionsBuilder();
             foreach (var column in _modelEntity.GetPrimaryFields())
             {
-                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                conditionsBuilder.AddQueryCondition(column.ColumnName, EConditionTypes.Equals,
                     new object[] { _modelEntity.GetPrimaryFieldValue(column.ColumnName) });
             }
 
@@ -76,14 +75,14 @@ namespace ConvORM.Connection.DataTransferor
         public IList FindAll()
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(new QueryConditionsBuilder()),
+                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(new QueryConditionsBuilder()),
                     _modelEntity.EntityType);
         }
 
         public IList Find(QueryConditionsBuilder conditionsBuilder)
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
+                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
 
@@ -93,13 +92,13 @@ namespace ConvORM.Connection.DataTransferor
             int idsCount = 0;
             foreach (var column in _modelEntity.GetPrimaryFields())
             {
-                conditionsBuilder.AddQueryCondition(column.ColumnName, Enums.EConditionTypes.Equals,
+                conditionsBuilder.AddQueryCondition(column.ColumnName, EConditionTypes.Equals,
                     new object[] { ids[0] });
 
                 idsCount++;
             }
             return _connection.ConnectionDriver()
-                .ExecuteScalarQuery(new CommandBuilder(_modelEntity).GetSqlSelect(conditionsBuilder),
+                .ExecuteScalarQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
     }

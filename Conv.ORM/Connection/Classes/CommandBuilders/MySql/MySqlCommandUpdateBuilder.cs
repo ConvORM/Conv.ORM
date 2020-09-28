@@ -1,34 +1,36 @@
-﻿using ConvORM.Connection.Enums;
+﻿using ConvORM.Connection.Classes.CommandBuilders.Interfaces;
+using ConvORM.Connection.Classes.QueryBuilders;
+using ConvORM.Connection.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ConvORM.Connection.Classes.QueryBuilders;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
-    internal class CommandSelectBuilder
+    class MySqlCommandUpdateBuilder : ICommandUpdateBuilder
     {
         private readonly ModelEntity _modelEntity;
         private readonly QueryConditionsBuilder _queryConditionsBuilder;
 
-        public CommandSelectBuilder(ModelEntity model, QueryConditionsBuilder queryConditions)
+        public MySqlCommandUpdateBuilder(ModelEntity model, QueryConditionsBuilder queryConditionsBuilder)
         {
             _modelEntity = model;
-            _queryConditionsBuilder = queryConditions;
+            _queryConditionsBuilder = queryConditionsBuilder;
         }
 
-        internal string GetSqlSelect()
+        public string GetSqlUpdate(out Dictionary<string, object> parametersValues)
         {
             var sql = new StringBuilder();
 
-            sql.Append("SELECT ");
-
-            sql.Append(GetSqlFields());
-
-            sql.Append(" FROM ");
+            sql.Append("UPDATE ");
             sql.Append(_modelEntity.TableName);
 
-            if (!HasWhere()) return sql.ToString();
+            sql.Append(" SET ");
+
+            GetSqlFieldsAndParameters(out var fieldAndValues,
+                                      out parametersValues);
+
+            sql.Append(fieldAndValues);
 
             sql.Append(" WHERE ");
             sql.Append(GetWhere());
@@ -36,27 +38,38 @@ namespace ConvORM.Connection.Classes.CommandBuilders
             return sql.ToString();
         }
 
-        private string GetSqlFields()
+        private void GetSqlFieldsAndParameters(out string fieldAndValues, out Dictionary<string, object> parametersValues)
         {
-            var sqlFields = new StringBuilder();
+            parametersValues = new Dictionary<string, object>();
+
+            var sqlFieldAndValues = new StringBuilder();
 
             foreach (var columnModelEntity in _modelEntity.ColumnsModelEntity)
             {
-                sqlFields.Append(_modelEntity.TableName);
-                sqlFields.Append(".");
-                sqlFields.Append(columnModelEntity.ColumnName);
-                sqlFields.Append(",");
+                if (columnModelEntity.Primary)
+                    continue;
+                sqlFieldAndValues.Append(columnModelEntity.ColumnName);
+
+                sqlFieldAndValues.Append(" = ");
+
+                var parameter = "?" + columnModelEntity.ColumnName;
+
+                sqlFieldAndValues.Append(parameter);
+                sqlFieldAndValues.Append(",");
+
+                parametersValues.Add(parameter, columnModelEntity.Value);
+
             }
 
-            sqlFields.Remove(sqlFields.Length - 1, 1);
+            sqlFieldAndValues.Remove(sqlFieldAndValues .Length - 1, 1);
 
-            return sqlFields.ToString();
+            fieldAndValues = sqlFieldAndValues.ToString();
         }
 
         private string GetWhere()
         {
             var sqlWhere = new StringBuilder();
-            foreach(var condition in _queryConditionsBuilder.QueryConditionList)
+            foreach (var condition in _queryConditionsBuilder.QueryConditionList)
             {
                 sqlWhere.Append(condition.Field);
 
@@ -116,7 +129,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
         private string GetSqlBetween(object[] conditionValues)
         {
-            if (conditionValues.Length != 2) throw new  Exception("The condition of type BETWEEN require two values");
+            if (conditionValues.Length != 2) throw new Exception("The condition of type BETWEEN require two values");
 
             var sqlBetween = new StringBuilder();
             sqlBetween.Append(" ");
@@ -149,7 +162,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                         break;
                     case List<int> _:
                         if (sqlIn.Length > 1) sqlIn.Append(",");
-                        sqlIn.Append(string.Join(",", (List<string>) conditionValue ?? throw new InvalidOperationException()));
+                        sqlIn.Append(string.Join(",", (List<string>)conditionValue ?? throw new InvalidOperationException()));
                         break;
                     default:
                         if (sqlIn.Length > 1) sqlIn.Append(",");
@@ -180,3 +193,4 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
     }
 }
+
