@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConvORM.Connection.Classes.CommandBuilders.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConvORM.Connection.Classes.CommandBuilders
 {
-    class CommandInsertBuilderSqlServer
+    class CommandInsertBuilderSqlServer : ICommandInsertBuilder
     {
 
         private readonly ModelEntity _modelEntity;
@@ -69,6 +70,11 @@ namespace ConvORM.Connection.Classes.CommandBuilders
 
             fields = sqlFields.ToString();
             values = sqlValues.ToString();
+        }
+
+        string ICommandInsertBuilder.GetSqlInsert(out Dictionary<string, object> parametersValues)
+        {
+            throw new NotImplementedException();
         }
     }
 }
