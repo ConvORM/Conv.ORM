@@ -1,6 +1,8 @@
 ﻿using ConvORM.Connection.Classes.CommandBuilders.Interfaces;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,11 +30,17 @@ namespace ConvORM.Connection.Classes.CommandBuilders
             sqlValues.Append(" (");
             foreach (var columnModelEntity in _modelEntity.ColumnsModelEntity)
             {
+                if (columnModelEntity.Primary)
+                    continue;
+
+                sqlFields.Append("[");
                 sqlFields.Append(columnModelEntity.ColumnName);
+                sqlFields.Append("]");
                 sqlFields.Append(",");
 
+                
                 var parameter = "@" + columnModelEntity.ColumnName;
-
+                
                 sqlValues.Append(parameter);
                 sqlValues.Append(",");
 
@@ -55,7 +63,9 @@ namespace ConvORM.Connection.Classes.CommandBuilders
             var sql = new StringBuilder();
 
             sql.Append("INSERT INTO ");
+            sql.Append("[");
             sql.Append(_modelEntity.TableName);
+            sql.Append("]");
 
             GetSqlFieldsAndParameters(out var fields,
                                       out var values,
