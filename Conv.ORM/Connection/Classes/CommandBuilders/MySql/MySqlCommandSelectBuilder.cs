@@ -109,6 +109,13 @@ namespace ConvORM.Connection.Classes.CommandBuilders
                         break;
                 }
 
+                if (_queryConditionsBuilder.QueryConditionList.IndexOf(condition) < (_queryConditionsBuilder.QueryConditionList.Count - 1))
+                {
+                    sqlWhere.Append(" ");
+                    sqlWhere.Append(condition.LogicalType == ELogicalConditionTypes.And ? "AND" : "OR");
+                    sqlWhere.Append(" ");
+                }
+
             }
 
             return sqlWhere.ToString();
