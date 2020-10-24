@@ -59,7 +59,7 @@ namespace ConvORM.Connection.Classes.CommandBuilders.SqlServer
 
                 sqlFieldAndValues.Append(" = ");
 
-                var parameter = "?" + columnModelEntity.ColumnName;
+                var parameter = "@" + columnModelEntity.ColumnName;
 
                 sqlFieldAndValues.Append(parameter);
                 sqlFieldAndValues.Append(",");

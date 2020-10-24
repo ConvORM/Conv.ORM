@@ -85,7 +85,7 @@ namespace ConvORM.Connection.Classes
                 case EConnectionDriverTypes.ecdtPostgreeSQL:
                     return null;
                 case EConnectionDriverTypes.ecdtSQLServer:
-                    return new SqlSer;
+                    return new SqlServerCommandUpdateBuilder(_modelEntity, queryConditionsBuilder);
                 case EConnectionDriverTypes.ecdtNone:
                     return null;
                 default:
