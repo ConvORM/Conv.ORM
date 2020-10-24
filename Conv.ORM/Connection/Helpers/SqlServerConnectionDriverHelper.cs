@@ -1,8 +1,8 @@
 ﻿using ConvORM.Repository;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace ConvORM.Connection.Helpers
     class SqlServerConnectionDriverHelper
     {
 
-        public static Entity ConvertReaderToEntity(MySqlDataReader reader, Type type)
+        public static Entity ConvertReaderToEntity(SqlDataReader reader, Type type)
         {
             var instance = Activator.CreateInstance(type);
 
@@ -58,7 +58,7 @@ namespace ConvORM.Connection.Helpers
             return convertedValue != null;
         }
 
-        public static IList ConvertReaderToCollectionOfEntity(MySqlDataReader reader, Type entityType)
+        public static IList ConvertReaderToCollectionOfEntity(SqlDataReader reader, Type entityType)
         {
 
             var listType = typeof(List<>).MakeGenericType(entityType);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using ConvORM.Connection.Drivers.Interfaces;
@@ -90,17 +91,94 @@ namespace ConvORM.Connection.Drivers
 
         public Entity ExecuteScalarQuery(string sql, Type entityType)
         {
-            throw new NotImplementedException();
+            var command = new SqlCommand
+            {
+                CommandText = sql
+            };
+
+#if DEBUG
+            Console.WriteLine("Query: " + sql);
+#endif
+
+            command.Connection = _connection;
+
+            try
+            {
+                _connection.Open();
+                var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return SqlServerConnectionDriverHelper.ConvertReaderToEntity(reader, entityType);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Error: " + e.Message);
+#endif
+                return null;
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
+    
 
         public IList ExecuteQuery(string sql, Type entityType)
         {
-            throw new NotImplementedException();
+            var command = new SqlCommand
+            {
+                CommandText = sql
+            };
+
+#if DEBUG
+            Console.WriteLine("Query: " + sql);
+#endif
+
+            command.Connection = _connection;
+
+            try
+            {
+                _connection.Open();
+                var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                return SqlServerConnectionDriverHelper.ConvertReaderToCollectionOfEntity(reader, entityType);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Error: " + e.Message);
+#endif
+                return null;
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         public int GetLastInsertedId()
         {
-            throw new NotImplementedException();
+            var lastId = new SqlCommand { Connection = _connection, CommandText = ("SELECT @@identity as 'lastID' ") };
+
+            try
+            {
+                _connection.Open();
+                var lid = lastId.ExecuteReader();
+                Console.WriteLine("Execute Last ID: OK");
+                Console.WriteLine("Execute Last ID - Has Rows: " + (lid.HasRows ? "True" : "False"));
+                lid.Read();
+                return Convert.ToInt32((ulong)lid[0]);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Error: " + e.Message);
+#endif
+                return 0;
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
     }
+    
 }
