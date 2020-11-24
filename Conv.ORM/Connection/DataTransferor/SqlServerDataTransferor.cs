@@ -25,7 +25,7 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
 
         public Entity Insert()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer);
+            var commandBuilder = new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtSQLServer);
 
             if (_connection.ConnectionDriver()
                 .ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
@@ -59,14 +59,14 @@ namespace ConvORM.Connection.DataTransferor.Interfaces
         public IList FindAll()
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(new QueryConditionsBuilder()),
+                .ExecuteQuery(new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(new QueryConditionsBuilder()),
                     _modelEntity.EntityType);
         }
 
         public IList Find(QueryConditionsBuilder conditionsBuilder)
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(conditionsBuilder),
+                .ExecuteQuery(new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtSQLServer).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
 

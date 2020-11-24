@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace ConvORM.Connection.Classes
 {
-    internal class CommandBuilder
+    internal class CommandFactory
     {
         private readonly ModelEntity _modelEntity;
         private readonly EConnectionDriverTypes _eConnectionDriver;
 
-        public CommandBuilder(ModelEntity model, EConnectionDriverTypes eConnectionDriver)
+        public CommandFactory(ModelEntity model, EConnectionDriverTypes eConnectionDriver)
         {
             _modelEntity = model;
             _eConnectionDriver = eConnectionDriver;

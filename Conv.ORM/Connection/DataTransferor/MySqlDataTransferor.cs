@@ -25,7 +25,7 @@ namespace ConvORM.Connection.DataTransferor
 
         public Entity Insert()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql);
+            var commandBuilder = new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtMySql);
 
             if (_connection.ConnectionDriver()
                 .ExecuteCommand(commandBuilder.GetSqlInsert(out var parametersValues), parametersValues) > 0)
@@ -53,7 +53,7 @@ namespace ConvORM.Connection.DataTransferor
 
         public Entity Update()
         {
-            var commandBuilder = new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql);
+            var commandBuilder = new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtMySql);
 
             var conditionsBuilder = new QueryConditionsBuilder();
             foreach (var column in _modelEntity.GetPrimaryFields())
@@ -75,14 +75,14 @@ namespace ConvORM.Connection.DataTransferor
         public IList FindAll()
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(new QueryConditionsBuilder()),
+                .ExecuteQuery(new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(new QueryConditionsBuilder()),
                     _modelEntity.EntityType);
         }
 
         public IList Find(QueryConditionsBuilder conditionsBuilder)
         {
             return _connection.ConnectionDriver()
-                .ExecuteQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
+                .ExecuteQuery(new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
 
@@ -98,7 +98,7 @@ namespace ConvORM.Connection.DataTransferor
                 idsCount++;
             }
             return _connection.ConnectionDriver()
-                .ExecuteScalarQuery(new CommandBuilder(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
+                .ExecuteScalarQuery(new CommandFactory(_modelEntity, EConnectionDriverTypes.ecdtMySql).GetSqlSelect(conditionsBuilder),
                     _modelEntity.EntityType);
         }
     }

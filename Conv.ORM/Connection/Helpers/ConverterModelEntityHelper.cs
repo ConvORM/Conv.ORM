@@ -4,6 +4,7 @@ using ConvORM.Repository;
 using ConvORM.Repository.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConvORM.Connection.Helpers
 {
