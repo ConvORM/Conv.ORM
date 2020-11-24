@@ -116,6 +116,12 @@ namespace ConvORM.Connection.Classes.CommandBuilders.SqlServer
                     default:
                         break;
                 }
+                if (_queryConditionsBuilder.QueryConditionList.IndexOf(condition) < (_queryConditionsBuilder.QueryConditionList.Count - 1))
+                {
+                    sqlWhere.Append(" ");
+                    sqlWhere.Append(condition.LogicalType == ELogicalConditionTypes.And ? "AND" : "OR");
+                    sqlWhere.Append(" ");
+                }
 
             }
 
